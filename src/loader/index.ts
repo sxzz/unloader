@@ -32,7 +32,7 @@ export const initialize: InitializeHook = async (_data: Data) => {
   for (const plugin of config.plugins || []) {
     await plugin.buildStart?.({ port, log })
 
-    log(`loaded plugin ${plugin.name}`)
+    log(`loaded plugin: ${plugin.name}`, undefined, true)
   }
 
   plugins = config.plugins || []

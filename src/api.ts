@@ -1,7 +1,10 @@
 import module from 'node:module'
 import process from 'node:process'
+import Debug from 'debug'
 import type { Data } from './loader/index.ts'
 import type { MessageLog } from './loader/rpc.ts'
+
+const debug = Debug('unloader')
 
 export function register(): void {
   if (!module.register) {
@@ -23,8 +26,13 @@ export function register(): void {
 
   port1.on('message', (message: MessageLog) => {
     switch (message.type) {
-      case 'log':
-        console.info('[port log]', message.message)
+      case 'log': {
+        if (message.debug) {
+          debug(message.message)
+        } else {
+          console.info(message.message)
+        }
+      }
     }
   })
   port1.unref()
