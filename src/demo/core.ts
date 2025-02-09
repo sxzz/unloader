@@ -13,16 +13,17 @@ const plugin: Plugin<Data> = {
     context.log(`count is ${context.data.count}`)
   },
   async resolveId(source, importer, options) {
+    if (source === 'virtual-mod') {
+      return 'file:///virtual-mod.ts'
+    }
     const result = await this.resolve(`${source}.ts`, importer, options)
     if (result) return result
   },
-  // load(id, options) {
-  //   context.log([id, options])
-  //   return {
-  //     code: 'module.exports = 42',
-  //     format: 'commonjs',
-  //   }
-  // },
+  load(id) {
+    if (id === 'file:///virtual-mod.ts') {
+      return { code: 'export const count = 42' }
+    }
+  },
 }
 
 // eslint-disable-next-line import/no-default-export

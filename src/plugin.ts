@@ -37,11 +37,6 @@ export interface ResolvedId {
    * A hint to the load hook (it might be ignored)
    */
   format?: ModuleFormat | null | undefined
-  /**
-   * A signal that this hook intends to terminate the chain of `resolve` hooks.
-   * @default false
-   */
-  shortCircuit?: boolean | undefined
 }
 
 export interface LoadResult {

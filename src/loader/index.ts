@@ -80,13 +80,14 @@ export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
         return {
           url: result,
           importAttributes: context.importAttributes,
+          shortCircuit: true,
         }
 
       return {
         url: result.id,
         format: result.format,
         importAttributes: result.attributes || context.importAttributes,
-        shortCircuit: result.shortCircuit,
+        shortCircuit: true,
       }
     }
   }
