@@ -3,7 +3,7 @@ import { loadConfig as unconfig } from 'unconfig'
 import type { Plugin } from '../plugin.ts'
 
 export interface UnloaderConfig {
-  plugins: Plugin[]
+  plugins?: Plugin[]
 }
 
 export async function loadConfig(): Promise<UnloaderConfig> {
@@ -15,7 +15,7 @@ export async function loadConfig(): Promise<UnloaderConfig> {
       },
     ],
     cwd: process.cwd(),
-    defaults: { plugins: [] },
+    defaults: {},
   })
 
   return config

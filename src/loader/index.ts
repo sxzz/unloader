@@ -29,13 +29,13 @@ export const initialize: InitializeHook = async (_data: Data) => {
   const { port } = data
 
   const config = await loadConfig()
-  for (const plugin of config.plugins) {
+  for (const plugin of config.plugins || []) {
     await plugin.buildStart?.({ port, log })
 
     log(`loaded plugin ${plugin.name}`)
   }
 
-  plugins = config.plugins
+  plugins = config.plugins || []
 }
 
 export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
