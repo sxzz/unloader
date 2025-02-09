@@ -2,6 +2,8 @@
 
 [![Unit Test](https://github.com/sxzz/unloader/actions/workflows/unit-test.yml/badge.svg)](https://github.com/sxzz/unloader/actions/workflows/unit-test.yml)
 
+Node.js Loader with a Rollup-like interface.
+
 ## Install
 
 ```bash

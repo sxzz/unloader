@@ -2,7 +2,7 @@
   "name": "unloader",
   "version": "0.0.0",
   "packageManager": "pnpm@10.2.0",
-  "description": "undefined",
+  "description": "Node.js Loader with a Rollup-like interface.",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/sxzz/unloader#readme",
