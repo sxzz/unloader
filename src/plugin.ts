@@ -1,19 +1,8 @@
+import type { ImportAttributes, ModuleFormat, ModuleSource } from 'node:module'
 import type { MessagePort, TransferListItem } from 'node:worker_threads'
 
-type Awaitable<T> = T | Promise<T>
+export type Awaitable<T> = T | Promise<T>
 export type FalsyValue = null | undefined | false | void
-
-export type ModuleFormat =
-  | 'builtin'
-  | 'commonjs'
-  | 'commonjs-typescript'
-  | 'json'
-  | 'module'
-  | 'module-typescript'
-  | 'wasm'
-export type ModuleSource = string | ArrayBuffer | NodeJS.TypedArray
-
-export type ImportAttributes = Record<string, string | undefined>
 
 export interface ResolveMeta {
   /**

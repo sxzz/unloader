@@ -2,7 +2,6 @@ import { interopDefault } from '../utils.ts'
 import type {
   FalsyValue,
   LoadResult,
-  ModuleSource,
   Plugin,
   PluginEntry,
   ResolvedId,
@@ -13,6 +12,7 @@ import type {
   InitializeHook,
   LoadFnOutput,
   LoadHook,
+  ModuleSource,
   ResolveHook,
 } from 'node:module'
 import type { MessagePort } from 'node:worker_threads'
@@ -148,16 +148,12 @@ export const load: LoadHook = async (url, context, nextLoad) => {
         ArrayBuffer.isView(transformResult) ||
         transformResult instanceof ArrayBuffer
       ) {
-        result = {
-          source: transformResult,
-          format: result?.format || defaultFormat,
-          shortCircuit: result.shortCircuit,
-        }
+        result = { ...result, source: transformResult }
       } else {
         result = {
+          ...result,
           source: transformResult.code,
-          format: transformResult.format || result.format || defaultFormat,
-          shortCircuit: result.shortCircuit,
+          format: transformResult.format || result.format,
         }
       }
     }
