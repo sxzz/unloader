@@ -42,16 +42,16 @@ export interface PluginContext<T> {
   log: (message: any, transferList?: TransferListItem[]) => void
 }
 
+export type ResolveFn = (
+  source: string,
+  importer?: string,
+  options?: ResolveMeta,
+) => Promise<ResolvedId | null>
+
 export interface Plugin<T = any> {
   buildStart?: (context: PluginContext<T>) => Awaitable<void>
   resolveId?: (
-    this: {
-      resolve: (
-        source: string,
-        importer?: string,
-        options?: ResolveMeta,
-      ) => Promise<ResolvedId | null>
-    },
+    this: { resolve: ResolveFn },
     source: string,
     importer: string | undefined,
     options: ResolveMeta,
