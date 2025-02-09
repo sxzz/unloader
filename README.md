@@ -10,6 +10,14 @@
 npm i unloader
 ```
 
+## Usage
+
+See [example](./playground/demo.ts) for more details.
+
+## Credits
+
+- Thanks to [tsx](https://github.com/privatenumber/tsx)!
+
 ## Sponsors
 
 <p align="center">
