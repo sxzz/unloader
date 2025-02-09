@@ -28,7 +28,7 @@ export function register(plugins: PluginEntry[] = []): void {
     transferList.push(...(plugin.transferList || []))
   }
 
-  module.register('./loader/index.ts', {
+  module.register('./loader/index.js', {
     parentURL: import.meta.url,
     data,
     transferList,
