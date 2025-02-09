@@ -4,7 +4,7 @@ import { register } from './src/index.ts'
 register([demoPlugin()])
 
 const mod = await import('./src/utils') // no .ts suffix
-console.log(mod)
+console.info(mod)
 
 const mod2 = await import('virtual-mod')
-console.log(mod2)
+console.info(mod2)
