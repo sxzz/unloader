@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      unconfig:
+        specifier: ^7.0.0
+        version: 7.0.0
     devDependencies:
       '@sxzz/eslint-config':
         specifier: ^5.0.1
@@ -2103,6 +2107,9 @@ packages:
 
   unconfig@0.6.1:
     resolution: {integrity: sha512-cVU+/sPloZqOyJEAfNwnQSFCzFrZm85vcVkryH7lnlB/PiTycUkAjt5Ds79cfIshGOZ+M5v3PBDnKgpmlE5DtA==}
+
+  unconfig@7.0.0:
+    resolution: {integrity: sha512-G5CJSoG6ZTxgzCJblEfgpdRK2tos9+UdD2WtecDUVfImzQ0hFjwpH5RVvGMhP4pRpC9ML7NrC4qBsBl0Ttj35A==}
 
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
@@ -4490,6 +4497,12 @@ snapshots:
       importx: 0.5.1
     transitivePeerDependencies:
       - supports-color
+
+  unconfig@7.0.0:
+    dependencies:
+      '@antfu/utils': 8.1.0
+      defu: 6.1.4
+      jiti: 2.4.2
 
   undici-types@6.20.0: {}
 

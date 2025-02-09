@@ -36,8 +36,7 @@ export interface LoadResult {
   format?: ModuleFormat
 }
 
-export interface PluginContext<T> {
-  data: T
+export interface PluginContext {
   port: MessagePort
   log: (message: any, transferList?: TransferListItem[]) => void
 }
@@ -48,8 +47,9 @@ export type ResolveFn = (
   options?: ResolveMeta,
 ) => Promise<ResolvedId | null>
 
-export interface Plugin<T = any> {
-  buildStart?: (context: PluginContext<T>) => Awaitable<void>
+export interface Plugin {
+  name: string
+  buildStart?: (context: PluginContext) => Awaitable<void>
   resolveId?: (
     this: { resolve: ResolveFn },
     source: string,
@@ -65,11 +65,4 @@ export interface Plugin<T = any> {
     id: string,
     options: ResolveMeta & { format: ModuleFormat | null | undefined },
   ) => Awaitable<ModuleSource | LoadResult | FalsyValue>
-}
-
-export interface PluginEntry<T = any> {
-  name: string
-  entry: string
-  data?: T
-  transferList?: any[]
 }
