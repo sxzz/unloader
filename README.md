@@ -12,7 +12,15 @@ npm i unloader
 
 ## Usage
 
-See [example](./playground/demo.ts) for more details.
+### CLI
+
+```bash
+node --import unloader/register ...
+```
+
+### Plugin Development
+
+WIP. See [example](./playground/demo.ts) for more details.
 
 ## Credits
 
