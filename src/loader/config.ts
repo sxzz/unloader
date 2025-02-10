@@ -3,6 +3,7 @@ import { loadConfig as unconfig } from 'unconfig'
 import type { Plugin } from '../plugin.ts'
 
 export interface UnloaderConfig {
+  sourcemap?: boolean
   plugins?: Plugin[]
 }
 

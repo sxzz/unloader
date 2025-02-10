@@ -41,6 +41,8 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
+    "@ampproject/remapping": "^2.3.0",
+    "birpc": "^2.2.0",
     "debug": "^4.4.0",
     "unconfig": "^7.0.0"
   },

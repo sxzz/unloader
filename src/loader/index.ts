@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type {
   FalsyValue,
   LoadResult,
@@ -6,7 +7,8 @@ import type {
   ResolveMeta,
 } from '../plugin'
 import { loadConfig } from './config.ts'
-import { log } from './rpc.ts'
+import { attachSourceMap } from './map.ts'
+import { initRpc, log, rpc } from './rpc.ts'
 import type {
   InitializeHook,
   LoadFnOutput,
@@ -27,12 +29,22 @@ let plugins: Plugin[]
 export const initialize: InitializeHook = async (_data: Data) => {
   data = _data
   const { port } = data
+  initRpc(port)
 
-  const config = await loadConfig()
+  let config = await loadConfig()
+
+  for (const plugin of config.plugins || []) {
+    config = plugin.options?.(config) || config
+  }
+
   for (const plugin of config.plugins || []) {
     await plugin.buildStart?.({ port, log })
 
-    log(`loaded plugin: ${plugin.name}`, undefined, true)
+    rpc.debug(`loaded plugin: ${plugin.name}`)
+  }
+
+  if (config.sourcemap && !process.sourceMapsEnabled) {
+    rpc.enableSourceMap(true)
   }
 
   plugins = config.plugins || []
@@ -120,7 +132,10 @@ export const load: LoadHook = async (url, context, nextLoad) => {
         }
       } else {
         result = {
-          source: loadResult.code,
+          source:
+            typeof loadResult.code === 'string'
+              ? attachSourceMap(loadResult.map, loadResult.code)
+              : loadResult.code,
           format: loadResult.format || defaultFormat,
           shortCircuit: true,
         }

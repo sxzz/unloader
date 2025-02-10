@@ -1,3 +1,4 @@
+import type { UnloaderConfig } from './loader/config'
 import type { ImportAttributes, ModuleFormat, ModuleSource } from 'node:module'
 import type { MessagePort, TransferListItem } from 'node:worker_threads'
 
@@ -33,6 +34,7 @@ export interface LoadResult {
    * The source for Node.js to evaluate
    */
   code?: ModuleSource | undefined
+  map?: any
   format?: ModuleFormat
 }
 
@@ -49,6 +51,7 @@ export type ResolveFn = (
 
 export interface Plugin {
   name: string
+  options?: (config: UnloaderConfig) => UnloaderConfig | FalsyValue
   buildStart?: (context: PluginContext) => Awaitable<void>
   resolveId?: (
     this: { resolve: ResolveFn },
