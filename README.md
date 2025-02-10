@@ -20,7 +20,7 @@ node --import unloader/register ...
 
 ### Plugin Development
 
-WIP. See [example](./playground/demo.ts) for more details.
+WIP. See [demo plugin](./playground/demo.ts) and [unloader.config.ts](./unloader.config.ts) for more details.
 
 ## Credits
 
