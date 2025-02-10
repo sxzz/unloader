@@ -122,11 +122,7 @@ export const load: LoadHook = async (url, context, nextLoad) => {
     })
 
     if (loadResult) {
-      if (
-        typeof loadResult === 'string' ||
-        ArrayBuffer.isView(loadResult) ||
-        loadResult instanceof ArrayBuffer
-      ) {
+      if (isModuleSource(loadResult)) {
         result = {
           source: loadResult,
           format: defaultFormat,
@@ -155,11 +151,7 @@ export const load: LoadHook = async (url, context, nextLoad) => {
         attributes: context.importAttributes,
       })
     if (transformResult) {
-      if (
-        typeof transformResult === 'string' ||
-        ArrayBuffer.isView(transformResult) ||
-        transformResult instanceof ArrayBuffer
-      ) {
+      if (isModuleSource(transformResult)) {
         result = { ...result, source: transformResult }
       } else {
         if (transformResult.map) maps.unshift(transformResult.map)
@@ -179,4 +171,10 @@ export const load: LoadHook = async (url, context, nextLoad) => {
   }
 
   return result
+}
+
+function isModuleSource(v: unknown): v is ModuleSource {
+  return (
+    typeof v === 'string' || ArrayBuffer.isView(v) || v instanceof ArrayBuffer
+  )
 }
