@@ -1,4 +1,5 @@
 import process from 'node:process'
+import remapping from '@ampproject/remapping'
 import type {
   FalsyValue,
   LoadResult,
@@ -110,6 +111,7 @@ export const load: LoadHook = async (url, context, nextLoad) => {
 
   let result: LoadFnOutput | undefined
   const defaultFormat = context.format || 'module'
+  const maps: any[] = []
 
   // load hook
   for (const plugin of plugins) {
@@ -131,11 +133,9 @@ export const load: LoadHook = async (url, context, nextLoad) => {
           shortCircuit: true,
         }
       } else {
+        if (loadResult.map) maps.unshift(loadResult.map)
         result = {
-          source:
-            typeof loadResult.code === 'string'
-              ? attachSourceMap(loadResult.map, loadResult.code)
-              : loadResult.code,
+          source: loadResult.code,
           format: loadResult.format || defaultFormat,
           shortCircuit: true,
         }
@@ -162,6 +162,7 @@ export const load: LoadHook = async (url, context, nextLoad) => {
       ) {
         result = { ...result, source: transformResult }
       } else {
+        if (transformResult.map) maps.unshift(transformResult.map)
         result = {
           ...result,
           source: transformResult.code,
@@ -169,6 +170,12 @@ export const load: LoadHook = async (url, context, nextLoad) => {
         }
       }
     }
+  }
+
+  if (maps.length && typeof result.source === 'string') {
+    const map = remapping(maps, () => null)
+    const code = attachSourceMap(map, result.source)
+    result.source = code
   }
 
   return result

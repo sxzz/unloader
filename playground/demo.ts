@@ -35,7 +35,26 @@ export function demoPlugin(): Plugin {
         const code = await readFile(fileURLToPath(id), 'utf8')
         const s = new MagicString(code)
         s.prepend('// header\n')
-        const map = s.generateMap({ hires: 'boundary', includeContent: true })
+        const map = s.generateMap({
+          file: id,
+          hires: 'boundary',
+          includeContent: true,
+        })
+        return {
+          code: s.toString(),
+          map,
+        }
+      }
+    },
+    transform(code, id) {
+      if (id.endsWith('trace.js') && typeof code === 'string') {
+        const s = new MagicString(code)
+        s.prepend('// header2\n')
+        const map = s.generateMap({
+          file: id,
+          hires: 'boundary',
+          includeContent: true,
+        })
         return {
           code: s.toString(),
           map,
