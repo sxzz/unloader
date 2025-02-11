@@ -1,4 +1,5 @@
 import process from 'node:process'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import remapping from '@ampproject/remapping'
 import type {
   FalsyValue,
@@ -56,8 +57,8 @@ export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
     for (const plugin of plugins) {
       const result = await plugin.resolveId?.call(
         { resolve },
-        specifier,
-        context.parentURL,
+        urlToPath(specifier),
+        urlToPath(context.parentURL),
         {
           conditions: context.conditions,
           attributes: context.importAttributes,
@@ -67,13 +68,13 @@ export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
       if (result) {
         if (typeof result === 'string')
           return {
-            url: result,
+            url: pathToUrl(result),
             importAttributes: context.importAttributes,
             shortCircuit: true,
           }
 
         return {
-          url: result.id,
+          url: pathToUrl(result.id),
           format: result.format,
           importAttributes: result.attributes || context.importAttributes,
           shortCircuit: true,
@@ -90,13 +91,13 @@ export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
     options?: ResolveMeta,
   ): Promise<ResolvedId | null> {
     try {
-      const resolved = await nextResolve(source, {
+      const resolved = await nextResolve(pathToUrl(source), {
         parentURL: importer,
         conditions: options?.conditions,
         importAttributes: options?.attributes,
       })
       return {
-        id: resolved.url,
+        id: urlToPath(resolved.url),
         attributes: resolved.importAttributes,
         format: resolved.format,
       }
@@ -115,7 +116,7 @@ export const load: LoadHook = async (url, context, nextLoad) => {
 
   // load hook
   for (const plugin of plugins) {
-    const loadResult = await plugin.load?.(url, {
+    const loadResult = await plugin.load?.(urlToPath(url), {
       format: context.format,
       conditions: context.conditions,
       attributes: context.importAttributes,
@@ -145,7 +146,7 @@ export const load: LoadHook = async (url, context, nextLoad) => {
   // transform hook
   for (const plugin of plugins) {
     const transformResult: ModuleSource | LoadResult | FalsyValue =
-      await plugin.transform?.(result.source, url, {
+      await plugin.transform?.(result.source, urlToPath(url), {
         format: result.format,
         conditions: context.conditions,
         attributes: context.importAttributes,
@@ -177,4 +178,21 @@ function isModuleSource(v: unknown): v is ModuleSource {
   return (
     typeof v === 'string' || ArrayBuffer.isView(v) || v instanceof ArrayBuffer
   )
+}
+
+export function urlToPath(url: string): string
+export function urlToPath(url: string | undefined): string | undefined
+export function urlToPath(url: string | undefined): string | undefined {
+  if (!url) return url
+  return url.startsWith('file://') ? fileURLToPath(url) : url
+}
+
+export function pathToUrl(path: string): string {
+  if (
+    path.startsWith('file://') ||
+    path.startsWith('data://') ||
+    path.startsWith('node:')
+  )
+    return path
+  return pathToFileURL(path).href
 }

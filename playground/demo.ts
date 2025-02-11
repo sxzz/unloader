@@ -1,7 +1,6 @@
 // @ts-check
 
 import { readFile } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import MagicString from 'magic-string'
 import type { Plugin, PluginContext } from '../src'
 
@@ -21,18 +20,18 @@ export function demoPlugin(): Plugin {
       if (source.startsWith('node:')) return
 
       if (source === 'virtual-mod') {
-        return 'file:///virtual-mod.ts'
+        return '/virtual-mod'
       }
 
       const result = await this.resolve(`${source}.js`, importer, options)
       if (result) return result
     },
     async load(id) {
-      if (id === 'file:///virtual-mod.ts') {
+      if (id === '/virtual-mod') {
         return { code: 'export const count = 42' }
       }
       if (id.endsWith('trace.js')) {
-        const code = await readFile(fileURLToPath(id), 'utf8')
+        const code = await readFile(id, 'utf8')
         const s = new MagicString(code)
         s.prepend('// header\n')
         const map = s.generateMap({
