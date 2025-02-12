@@ -2,9 +2,22 @@
 
 [![Unit Test](https://github.com/sxzz/unloader/actions/workflows/unit-test.yml/badge.svg)](https://github.com/sxzz/unloader/actions/workflows/unit-test.yml)
 
-🚧 WIP: Node.js Loader with a Rollup-like interface.
+Node.js loader with a Rollup-like interface.
+
+## Overview
+
+unloader is a Node.js loader framework. Similar to Rollup as a general bundler,
+unloader provides customization capabilities through a subset of
+[Rollup plugin API](https://rollupjs.org/plugin-development/#plugins-overview).
+
+unloader is designed to be a general-purpose loader, which can be used to
+develop various loaders, such as Oxc loader, TypeScript loader, etc.
 
 ## Install
+
+### Pre-requisites
+
+Node.js v18.19 or v20.6 and above is required.
 
 ```bash
 npm i unloader
@@ -18,9 +31,94 @@ npm i unloader
 node --import unloader/register ...
 ```
 
-### Plugin Development
+## Plugin Development
 
-WIP. See [demo plugin](./playground/demo.ts) and [unloader.config.ts](./unloader.config.ts) for more details.
+### Hooks
+
+| Hook        | Description                       |
+| ----------- | --------------------------------- |
+| `options`   | Modify the options from userland. |
+| `resolveId` | Resolve the module id.            |
+| `load`      | Load the module.                  |
+| `transform` | Transform the module.             |
+
+### Example
+
+<details>
+
+<summary>demo.ts</summary>
+
+```ts
+let context: PluginContext
+
+export function demoPlugin(): Plugin {
+  return {
+    name: 'demo-plugin',
+    options(config) {
+      config.sourcemap = true
+    },
+    buildStart(_context) {
+      context = _context
+      context.log('hello world')
+    },
+    async resolveId(source, importer, options) {
+      if (source.startsWith('node:')) return
+
+      // Feature: virtual module
+      if (source === 'virtual-mod') {
+        return '/virtual-mod'
+      }
+
+      // Feature: try resolve with different extensions
+      const result = await this.resolve(`${source}.js`, importer, options)
+      if (result) return result
+    },
+
+    load(id) {
+      if (id === '/virtual-mod') {
+        return { code: 'export const count = 42' }
+      }
+    },
+    transform(code, id) {
+      if (typeof code === 'string') {
+        // Feature: source map
+        const s = new MagicString(code)
+        s.prepend('// header\n')
+        const map = s.generateMap({
+          file: id,
+          hires: 'boundary',
+          includeContent: true,
+        })
+        return {
+          code: s.toString(),
+          map,
+        }
+      }
+    },
+  }
+}
+```
+
+</details>
+
+See [demo plugin](./playground/demo.ts) and [unloader.config.ts](./unloader.config.ts) for more details.
+
+### [unplugin](https://unplugin.unjs.io/)
+
+unloader is supported as a framework in [unplugin](https://unplugin.unjs.io/).
+
+```ts
+// unloader.config.ts
+import Oxc from 'unplugin-oxc/unloader'
+
+export default {
+  plugins: [
+    Oxc({
+      // options
+    }),
+  ],
+}
+```
 
 ## Credits
 
