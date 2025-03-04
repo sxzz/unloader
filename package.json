@@ -1,7 +1,7 @@
 {
   "name": "unloader",
   "version": "0.3.0",
-  "packageManager": "pnpm@10.2.0",
+  "packageManager": "pnpm@10.6.3",
   "description": "Node.js loader with a Rollup-like interface.",
   "type": "module",
   "license": "MIT",
@@ -44,21 +44,21 @@
     "@ampproject/remapping": "^2.3.0",
     "birpc": "^2.2.0",
     "debug": "^4.4.0",
-    "unconfig": "^7.0.0"
+    "unconfig": "^7.3.1"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^5.0.1",
-    "@sxzz/prettier-config": "^2.1.1",
+    "@sxzz/eslint-config": "^6.0.2",
+    "@sxzz/prettier-config": "^2.2.1",
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.13.1",
-    "bumpp": "^10.0.2",
-    "eslint": "^9.19.0",
-    "oxc-transform": "^0.48.2",
-    "prettier": "^3.4.2",
-    "tsdown": "^0.5.7",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
+    "@types/node": "^22.13.10",
+    "bumpp": "^10.1.0",
+    "eslint": "^9.22.0",
+    "oxc-transform": "^0.58.1",
+    "prettier": "^3.5.3",
+    "tsdown": "^0.6.8",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
   },
   "engines": {
     "node": "^18.19.0 || >=20.6.0"
