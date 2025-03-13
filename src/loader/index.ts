@@ -126,14 +126,14 @@ export const load: LoadHook = async (url, context, nextLoad) => {
       if (isModuleSource(loadResult)) {
         result = {
           source: loadResult,
-          format: defaultFormat,
+          format: defaultFormat as any,
           shortCircuit: true,
         }
       } else {
         if (loadResult.map) maps.unshift(loadResult.map)
         result = {
           source: loadResult.code,
-          format: loadResult.format || defaultFormat,
+          format: (loadResult.format || defaultFormat) as any,
           shortCircuit: true,
         }
       }

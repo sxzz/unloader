@@ -26,7 +26,7 @@ export interface ResolvedId {
   /**
    * A hint to the load hook (it might be ignored)
    */
-  format?: ModuleFormat | null | undefined
+  format?: ModuleFormat | (string & {}) | null | undefined
 }
 
 export interface LoadResult {
@@ -61,7 +61,9 @@ export interface Plugin {
   ) => Awaitable<string | ResolvedId | FalsyValue>
   load?: (
     id: string,
-    options: ResolveMeta & { format: ModuleFormat | null | undefined },
+    options: ResolveMeta & {
+      format: ModuleFormat | (string & {}) | null | undefined
+    },
   ) => Awaitable<ModuleSource | LoadResult | FalsyValue>
   transform?: (
     code: ModuleSource | undefined,
