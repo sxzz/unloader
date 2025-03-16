@@ -1,3 +1,4 @@
+import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import remapping from '@ampproject/remapping'
@@ -91,6 +92,10 @@ export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
     options?: ResolveMeta,
   ): Promise<ResolvedId | null> {
     try {
+      if (!path.isAbsolute(source) && importer) {
+        source = path.resolve(importer, '..', source)
+      }
+
       const resolved = await nextResolve(pathToUrl(source), {
         parentURL: importer,
         conditions: options?.conditions,
