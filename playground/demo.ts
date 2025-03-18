@@ -1,8 +1,9 @@
 // @ts-check
 
-import { readFile } from 'node:fs/promises'
+import { readFile } from '@quansync/fs'
 import MagicString from 'magic-string'
-import type { Plugin, PluginContext } from '../src'
+import { quansync } from 'quansync'
+import type { Plugin, PluginContext, ResolvedId, ResolveFn } from '../src'
 
 let context: PluginContext
 
@@ -14,24 +15,33 @@ export function demoPlugin(): Plugin {
     },
     buildStart(_context) {
       context = _context
-      context.log('hello world')
+      context.log('[plugin] build start')
     },
-    async resolveId(source, importer, options) {
+    resolveId: quansync(function* (
+      this: { resolve: ResolveFn },
+      source,
+      importer,
+      options,
+    ) {
       if (source.startsWith('node:')) return
-
       if (source === 'virtual-mod') {
         return '/virtual-mod'
       }
 
-      const result = await this.resolve(`${source}.js`, importer, options)
+      const id = `${source.replace('prefix_', '')}.js`
+      const result = (yield this.resolve(
+        id,
+        importer,
+        options,
+      )) as ResolvedId | null
       if (result) return result
-    },
-    async load(id) {
+    }),
+    load: quansync(function* (id: string) {
       if (id === '/virtual-mod') {
         return { code: 'export const count = 42' }
       }
       if (id.endsWith('trace.js')) {
-        const code = await readFile(id, 'utf8')
+        const code = (yield readFile(id, 'utf8')) as string
         const s = new MagicString(code)
         s.prepend('// header\n')
         const map = s.generateMap({
@@ -44,7 +54,7 @@ export function demoPlugin(): Plugin {
           map,
         }
       }
-    },
+    }),
     transform(code, id) {
       if (id.endsWith('trace.js') && typeof code === 'string') {
         const s = new MagicString(code)

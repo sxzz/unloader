@@ -1,13 +1,14 @@
 import process from 'node:process'
+import { quansync, type QuansyncFn } from 'quansync/macro'
 import { loadConfig as unconfig } from 'unconfig'
-import type { Plugin } from '../plugin.ts'
+import type { Plugin } from '../plugin'
 
-export interface UnloaderConfig {
+export interface UnloaderConfig<Sync = false> {
   sourcemap?: boolean
-  plugins?: Plugin[]
+  plugins?: Plugin<Sync>[]
 }
 
-export async function loadConfig(): Promise<UnloaderConfig> {
+export const loadConfig: QuansyncFn<UnloaderConfig, []> = quansync(async () => {
   const { config } = await unconfig<UnloaderConfig>({
     sources: [
       {
@@ -20,4 +21,4 @@ export async function loadConfig(): Promise<UnloaderConfig> {
   })
 
   return config
-}
+})

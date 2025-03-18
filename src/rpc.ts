@@ -1,16 +1,15 @@
 import process from 'node:process'
 import { createBirpc, type BirpcReturn } from 'birpc'
-import Debug from 'debug'
+import { debug } from './utils/debug'
 import type { ThreadFunctions } from './loader/rpc'
 import type { MessagePort } from 'node:worker_threads'
 
-const debug = Debug('unloader')
 const mainFunctions = {
   log(...messages: any[]): void {
     console.info(...messages)
   },
-  debug(formatter: any, ...args: any[]): void {
-    debug(formatter, ...args)
+  debug(...args: any[]): void {
+    ;(debug as any)(...args)
   },
   enableSourceMap(enabled: boolean): void {
     process.setSourceMapsEnabled(enabled)

@@ -44,6 +44,7 @@
     "@ampproject/remapping": "^2.3.0",
     "birpc": "^2.2.0",
     "debug": "^4.4.0",
+    "quansync": "^0.2.8",
     "unconfig": "^7.3.1"
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "tsdown": "^0.6.8",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
+    "unplugin-quansync": "^0.3.5",
     "vitest": "^3.0.8"
   },
   "engines": {

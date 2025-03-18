@@ -1,6 +1,7 @@
-import type { UnloaderConfig } from './loader/config'
+import type { UnloaderConfig } from './utils/config'
 import type { ImportAttributes, ModuleFormat, ModuleSource } from 'node:module'
 import type { MessagePort, TransferListItem } from 'node:worker_threads'
+import type { QuansyncAwaitableGenerator } from 'quansync'
 
 export type Awaitable<T> = T | Promise<T>
 export type FalsyValue = null | undefined | false | void
@@ -39,35 +40,40 @@ export interface LoadResult {
 }
 
 export interface PluginContext {
-  port: MessagePort
+  port?: MessagePort
   log: (message: any, transferList?: TransferListItem[]) => void
+  debug: (...args: any[]) => void
 }
 
-export type ResolveFn = (
+export type ConditionalAwaitable<C, T> =
+  | (C extends true ? T : Awaitable<T>)
+  | QuansyncAwaitableGenerator<T>
+
+export type ResolveFn<Sync = false> = (
   source: string,
   importer?: string,
   options?: ResolveMeta,
-) => Promise<ResolvedId | null>
+) => ConditionalAwaitable<Sync, ResolvedId | null>
 
-export interface Plugin {
+export interface Plugin<Sync = false> {
   name: string
-  options?: (config: UnloaderConfig) => UnloaderConfig | FalsyValue
-  buildStart?: (context: PluginContext) => Awaitable<void>
+  options?: (config: UnloaderConfig<Sync>) => UnloaderConfig<Sync> | FalsyValue
+  buildStart?: (context: PluginContext) => ConditionalAwaitable<Sync, void>
   resolveId?: (
-    this: { resolve: ResolveFn },
+    this: { resolve: ResolveFn<Sync> },
     source: string,
     importer: string | undefined,
     options: ResolveMeta,
-  ) => Awaitable<string | ResolvedId | FalsyValue>
+  ) => ConditionalAwaitable<Sync, string | ResolvedId | FalsyValue>
   load?: (
     id: string,
     options: ResolveMeta & {
       format: ModuleFormat | (string & {}) | null | undefined
     },
-  ) => Awaitable<ModuleSource | LoadResult | FalsyValue>
+  ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
   transform?: (
     code: ModuleSource | undefined,
     id: string,
     options: ResolveMeta & { format: ModuleFormat | null | undefined },
-  ) => Awaitable<ModuleSource | LoadResult | FalsyValue>
+  ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
 }

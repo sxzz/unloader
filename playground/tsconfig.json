@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowArbitraryExtensions": true,
+    "allowJs": true,
+    "isolatedDeclarations": false
+  },
+  "include": ["."]
+}

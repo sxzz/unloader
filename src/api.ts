@@ -1,7 +1,10 @@
 import module from 'node:module'
 import process from 'node:process'
-import { createRpc } from './rpc.ts'
-import type { Data } from './loader/index.ts'
+import { createHooks } from './hooks'
+import { createRpc } from './rpc'
+import { debug } from './utils/debug'
+import type { Data } from './loader/index'
+import type { PluginContext } from './plugin'
 
 export function register(): void {
   if (!module.register) {
@@ -20,5 +23,29 @@ export function register(): void {
     parentURL: import.meta.url,
     data,
     transferList,
+  })
+}
+
+export function registerSync(): void {
+  // @ts-expect-error
+  const registerHooks = module.registerHooks
+  if (!registerHooks) {
+    throw new Error('CommonJS is not supported yet.')
+  }
+
+  const { init, resolve, load } = createHooks()
+
+  const context: PluginContext = {
+    log: (message) => console.info(message),
+    debug,
+  }
+  const config = init.sync(context)
+  if (config.sourcemap && !process.sourceMapsEnabled) {
+    process.setSourceMapsEnabled(true)
+  }
+
+  registerHooks({
+    resolve: resolve.sync,
+    load: load.sync,
   })
 }
