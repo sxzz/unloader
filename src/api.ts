@@ -6,7 +6,7 @@ import { debug } from './utils/debug'
 import type { Data } from './loader/index'
 import type { PluginContext } from './plugin'
 
-export function register(): void {
+export function register() {
   if (!module.register) {
     throw new Error(
       `This version of Node.js (${process.version}) does not support module.register(). Please upgrade to Node v18.19 or v20.6 and above.`,
@@ -14,7 +14,7 @@ export function register(): void {
   }
 
   const { port1, port2 } = new MessageChannel()
-  createRpc(port1)
+  const rpc = createRpc(port1)
   port1.unref()
 
   const data: Data = { port: port2 }
@@ -24,9 +24,11 @@ export function register(): void {
     data,
     transferList,
   })
+
+  return (): Promise<void> => rpc.deactivate()
 }
 
-export function registerSync(): void {
+export function registerSync(): () => void {
   // @ts-expect-error
   const registerHooks = module.registerHooks
   if (!registerHooks) {
@@ -35,7 +37,7 @@ export function registerSync(): void {
     )
   }
 
-  const { init, resolve, load } = createHooks()
+  const { init, resolve, load, deactivate } = createHooks()
 
   const context: PluginContext = {
     log: (message) => console.info(message),
@@ -50,4 +52,6 @@ export function registerSync(): void {
     resolve: resolve.sync,
     load: load.sync,
   })
+
+  return deactivate
 }

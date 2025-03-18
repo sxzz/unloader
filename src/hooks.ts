@@ -48,8 +48,10 @@ export function createHooks(): {
     LoadFnOutput,
     [url: string, context: LoadHookContext, nextLoad: NextLoad]
   >
+  deactivate: () => void
 } {
   let config: UnloaderConfig<false> | undefined
+  let deactivated = false
 
   const init = quansync(async (context: PluginContext) => {
     config = await loadConfig()
@@ -72,6 +74,8 @@ export function createHooks(): {
       context: ResolveHookContext,
       nextResolve: NextResolve,
     ) => {
+      if (deactivated) return nextResolve(specifier, context)
+
       if (config?.plugins) {
         for (const plugin of config.plugins) {
           const resolve = createResolve(nextResolve)
@@ -110,7 +114,7 @@ export function createHooks(): {
 
   const load = quansync(
     async (url: string, context: LoadHookContext, nextLoad: NextLoad) => {
-      if (!config?.plugins) return nextLoad(url, context)
+      if (deactivated || !config?.plugins) return nextLoad(url, context)
 
       let result: LoadFnOutput | undefined
       const defaultFormat = context.format || 'module'
@@ -177,7 +181,11 @@ export function createHooks(): {
     },
   )
 
-  return { init, resolve, load }
+  const deactivate = () => {
+    deactivated = true
+  }
+
+  return { init, resolve, load, deactivate }
 }
 
 function createResolve(nextResolve: NextResolve) {
