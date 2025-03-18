@@ -24,6 +24,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./register": "./dist/register.js",
+    "./register-sync": "./dist/register-sync.js",
     "./package.json": "./package.json"
   },
   "publishConfig": {

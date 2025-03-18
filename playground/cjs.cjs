@@ -1,5 +1,5 @@
 // @ts-check
-require('../dist/index.cjs').registerSync()
+require('../dist/index.js').registerSync()
 
 // @ts-expect-error
 require('./prefix_trace')

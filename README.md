@@ -17,7 +17,8 @@ develop various loaders, such as Oxc loader, TypeScript loader, etc.
 
 ### Pre-requisites
 
-Node.js v18.19 or v20.6 and above is required.
+Node.js v18.19 or v20.6 and above is required for ESM support, and Node.js v23.5
+and above is required for CommonJS support.
 
 ```bash
 npm i unloader
@@ -41,6 +42,61 @@ node --import unloader/register ...
 | `resolveId` | Resolve the module id.            |
 | `load`      | Load the module.                  |
 | `transform` | Transform the module.             |
+
+### ESM and CJS
+
+unloader supports both ESM and CJS, however, async hooks are only supported in
+ESM. To support both ESM and CJS, please make sure all hooks are synchronous, or
+use [quansync](https://github.com/quansync-dev/quansync).
+
+Here is an example of using sync hooks and quansync:
+
+<details>
+
+<summary>Show code</summary>
+
+```ts
+import { readFileSync } from 'node:fs'
+import { readFile } from '@quansync/fs'
+import { quansync } from 'quansync'
+import type { Plugin } from 'unloader'
+
+// sync usage
+const pluginSync: Plugin<true> = {
+  name: 'my-plugin',
+  resolveId(source, importer, options) {
+    const result = this.resolve(`${source}.js`, importer, options)
+    if (result) {
+      console.log(result)
+      return result
+    }
+  },
+  load(id) {
+    const contents = readFileSync(id, 'utf8')
+    console.log(contents)
+    return contents
+  },
+}
+
+// quansync usage
+const pluginQuansync: Plugin = {
+  name: 'my-plugin',
+  resolveId: quansync(function* (source, importer, options) {
+    const result = yield this.resolve(`${source}.js`, importer, options)
+    if (result) {
+      console.log(result)
+      return result
+    }
+  }),
+  load: quansync(function* (id) {
+    const contents = yield readFile(id, 'utf8')
+    console.log(contents)
+    return contents
+  }),
+}
+```
+
+</details>
 
 ### Example
 

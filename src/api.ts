@@ -30,7 +30,9 @@ export function registerSync(): void {
   // @ts-expect-error
   const registerHooks = module.registerHooks
   if (!registerHooks) {
-    throw new Error('CommonJS is not supported yet.')
+    throw new Error(
+      `This version of Node.js (${process.version}) does not support module.registerHooks(). Please upgrade to Node v23.5 or above.`,
+    )
   }
 
   const { init, resolve, load } = createHooks()
