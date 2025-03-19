@@ -5,8 +5,9 @@ import { createRpc } from './rpc'
 import { debug } from './utils/debug'
 import type { Data } from './loader/index'
 import type { PluginContext } from './plugin'
+import type { UnloaderConfig } from './utils/config'
 
-export function register() {
+export function register(inlineConfig?: string) {
   if (!module.register) {
     throw new Error(
       `This version of Node.js (${process.version}) does not support module.register(). Please upgrade to Node v18.19 or v20.6 and above.`,
@@ -17,7 +18,7 @@ export function register() {
   const rpc = createRpc(port1)
   port1.unref()
 
-  const data: Data = { port: port2 }
+  const data: Data = { port: port2, inlineConfig }
   const transferList = [port2]
   module.register('./loader/index.js', {
     parentURL: import.meta.url,
@@ -28,7 +29,7 @@ export function register() {
   return (): Promise<void> => rpc.deactivate()
 }
 
-export function registerSync(): () => void {
+export function registerSync(inlineConfig?: UnloaderConfig<true>): () => void {
   // @ts-expect-error
   const registerHooks = module.registerHooks
   if (!registerHooks) {
@@ -43,7 +44,7 @@ export function registerSync(): () => void {
     log: (message) => console.info(message),
     debug,
   }
-  const config = init.sync(context)
+  const config = init.sync(context, inlineConfig)
   if (config.sourcemap && !process.sourceMapsEnabled) {
     process.setSourceMapsEnabled(true)
   }

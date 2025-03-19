@@ -3,11 +3,13 @@ import { createBirpc, type BirpcReturn } from 'birpc'
 import { createHooks } from '../hooks'
 import type { PluginContext } from '../plugin'
 import type { MainFunctions } from '../rpc.ts'
+import type { UnloaderConfig } from '../utils/config'
 import type { InitializeHook, LoadHook, ResolveHook } from 'node:module'
 import type { MessagePort } from 'node:worker_threads'
 
 export interface Data {
   port: MessagePort
+  inlineConfig?: string
 }
 let data: Data
 
@@ -33,7 +35,11 @@ export const initialize: InitializeHook = async (_data: Data) => {
     log: (...args) => rpc.log(...args),
     debug: (...args) => rpc.debug(...args),
   }
-  const config = await hooks.init(context)
+  let inlineConfig: UnloaderConfig<boolean> | undefined
+  if (data.inlineConfig) {
+    inlineConfig = (await import(data.inlineConfig)).default
+  }
+  const config = await hooks.init(context, inlineConfig)
   if (config.sourcemap && !process.sourceMapsEnabled) {
     rpc.enableSourceMap(true)
   }

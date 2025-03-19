@@ -2,7 +2,7 @@
 import assert from 'node:assert'
 import { createRequire } from 'node:module'
 import { it } from 'node:test'
-import { register } from '../dist/index.js'
+import { register, registerSync } from '../dist/index.js'
 
 const require = createRequire(import.meta.url)
 
@@ -49,3 +49,42 @@ function clearRequireCache() {
     delete require.cache[key]
   })
 }
+
+it('resolve inline config (async)', () => {
+  const config = function config() {
+    return {
+      plugins: [
+        {
+          name: 'inline-plugin-async',
+          buildStart() {
+            throw new Error('inline-plugin-async')
+          },
+        },
+      ],
+    }
+  }
+  const code = `${config.toString()};export default config()`.replaceAll(
+    '\n',
+    '',
+  )
+  const specifier = `data:text/javascript,${code}`
+  assert.throws(() => register(specifier), /inline-plugin-async/)
+})
+
+it('resolve inline config (sync)', () => {
+  let flag = false
+  const unregister = registerSync({
+    plugins: [
+      {
+        name: 'inline-plugin-sync',
+        buildStart() {
+          flag = true
+        },
+      },
+    ],
+  })
+
+  assert(flag)
+
+  unregister()
+})

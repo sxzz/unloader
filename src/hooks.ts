@@ -39,7 +39,10 @@ type NextLoad = (
 ) => QuansyncAwaitable<LoadFnOutput>
 
 export function createHooks(): {
-  init: QuansyncFn<UnloaderConfig, [context: PluginContext]>
+  init: QuansyncFn<
+    UnloaderConfig,
+    [context: PluginContext, inlineConfig?: UnloaderConfig<boolean>]
+  >
   resolve: QuansyncFn<
     ResolveFnOutput,
     [specifier: string, context: ResolveHookContext, nextResolve: NextResolve]
@@ -53,20 +56,22 @@ export function createHooks(): {
   let config: UnloaderConfig<false> | undefined
   let deactivated = false
 
-  const init = quansync(async (context: PluginContext) => {
-    config = await loadConfig()
+  const init = quansync(
+    async (context: PluginContext, inlineConfig?: UnloaderConfig<boolean>) => {
+      config = inlineConfig || (await loadConfig())
 
-    for (const plugin of config.plugins || []) {
-      config = plugin.options?.(config) || config
-    }
+      for (const plugin of config.plugins || []) {
+        config = plugin.options?.(config) || config
+      }
 
-    for (const plugin of config.plugins || []) {
-      await plugin.buildStart?.(context)
-      context.debug(`loaded plugin: ${plugin.name}`)
-    }
+      for (const plugin of config.plugins || []) {
+        await plugin.buildStart?.(context)
+        context.debug(`loaded plugin: ${plugin.name}`)
+      }
 
-    return config
-  })
+      return config
+    },
+  )
 
   const resolve = quansync(
     async (
