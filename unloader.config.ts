@@ -1,5 +1,5 @@
-import { demoPlugin } from './playground/demo.ts'
-import { defineConfig } from './src/index.ts'
+import { defineConfig } from './src/index'
+import { demoPlugin } from './tests/demo'
 
 export default defineConfig({
   plugins: [demoPlugin()],

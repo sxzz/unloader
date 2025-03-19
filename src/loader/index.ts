@@ -1,6 +1,6 @@
 import process from 'node:process'
 import { createBirpc, type BirpcReturn } from 'birpc'
-import { createHooks } from '../hooks.ts'
+import { createHooks } from '../hooks'
 import type { PluginContext } from '../plugin'
 import type { MainFunctions } from '../rpc.ts'
 import type { InitializeHook, LoadHook, ResolveHook } from 'node:module'
