@@ -1,6 +1,6 @@
 import path from 'node:path'
 import remapping from '@ampproject/remapping'
-import { GET_IS_ASYNC } from 'quansync'
+import { getIsAsync } from 'quansync'
 import {
   quansync,
   type QuansyncAwaitableGenerator,
@@ -79,9 +79,9 @@ export function createHooks(): {
       if (config?.plugins) {
         for (const plugin of config.plugins) {
           const resolve = createResolve(nextResolve)
-          const isAsync: boolean = !!(await GET_IS_ASYNC)
+          const isAsync = await getIsAsync()
           const result = await plugin.resolveId?.call(
-            { resolve: isAsync ? resolve : (resolve.sync as any) },
+            { resolve: isAsync ? resolve : resolve.sync },
             urlToPath(specifier),
             urlToPath(context.parentURL),
             {
@@ -192,12 +192,11 @@ function createResolve(nextResolve: NextResolve) {
   return quansync(
     async (source: string, importer?: string, options?: ResolveMeta) => {
       try {
-        const isAsync: boolean = !!(await GET_IS_ASYNC)
-
         if (!path.isAbsolute(source) && importer) {
           source = path.resolve(importer, '..', source)
         }
 
+        const isAsync = await getIsAsync()
         const resolved = await nextResolve(pathToUrl(isAsync, source), {
           parentURL: importer,
           conditions: options?.conditions,
