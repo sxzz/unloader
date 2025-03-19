@@ -30,7 +30,7 @@ npm i unloader
 
 ```bash
 node --import unloader/register ... # For ESM only, support both sync and async hooks
-node --import unloader/register-sync ... # For both ESM and CJS, only support sync hooks
+node --require unloader/register-sync ... # For both ESM and CJS, only support sync hooks
 ```
 
 ## Plugin Development
