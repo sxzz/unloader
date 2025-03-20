@@ -55,9 +55,11 @@ export function createHooks(): {
 } {
   let config: UnloaderConfig<false> | undefined
   let deactivated = false
+  let pluginContext: PluginContext | undefined
 
   const init = quansync(
     async (context: PluginContext, inlineConfig?: UnloaderConfig<boolean>) => {
+      pluginContext = context
       config = inlineConfig || (await loadConfig())
 
       for (const plugin of config.plugins || []) {
@@ -81,9 +83,16 @@ export function createHooks(): {
     ) => {
       if (deactivated) return nextResolve(specifier, context)
 
+      // FIXME: `require`: context.conditions is `SafeSet`
+      const isRequire = !Array.isArray(context.conditions)
+
+      pluginContext?.debug(
+        `resolving ${JSON.stringify(specifier)} with context`,
+        context,
+      )
       if (config?.plugins) {
         for (const plugin of config.plugins) {
-          const resolve = createResolve(nextResolve)
+          const resolve = createResolve(isRequire, nextResolve)
           const isAsync = await getIsAsync()
           const result = await plugin.resolveId?.call(
             { resolve: isAsync ? resolve : resolve.sync },
@@ -96,19 +105,29 @@ export function createHooks(): {
           )
 
           if (result) {
-            if (typeof result === 'string')
-              return {
-                url: pathToUrl(isAsync, result),
+            let output: ResolveFnOutput
+            if (typeof result === 'string') {
+              output = {
+                url: pathToUrl(isRequire, result),
                 importAttributes: context.importAttributes,
                 shortCircuit: true,
               }
-
-            return {
-              url: pathToUrl(isAsync, result.id),
-              format: result.format,
-              importAttributes: result.attributes || context.importAttributes,
-              shortCircuit: true,
+            } else {
+              output = {
+                url: pathToUrl(isRequire, result.id),
+                format: result.format,
+                importAttributes: result.attributes || context.importAttributes,
+                shortCircuit: true,
+              }
             }
+
+            pluginContext?.debug(
+              `resolved ${JSON.stringify(specifier)} to ${JSON.stringify(
+                output.url,
+              )} with format`,
+              output.format,
+            )
+            return output
           }
         }
       }
@@ -120,6 +139,8 @@ export function createHooks(): {
   const load = quansync(
     async (url: string, context: LoadHookContext, nextLoad: NextLoad) => {
       if (deactivated || !config?.plugins) return nextLoad(url, context)
+
+      pluginContext?.debug(`load ${JSON.stringify(url)} with context`, context)
 
       let result: LoadFnOutput | undefined
       const defaultFormat = context.format || 'module'
@@ -193,16 +214,15 @@ export function createHooks(): {
   return { init, resolve, load, deactivate }
 }
 
-function createResolve(nextResolve: NextResolve) {
+function createResolve(isRequire: boolean, nextResolve: NextResolve) {
   return quansync(
     async (source: string, importer?: string, options?: ResolveMeta) => {
-      try {
-        if (!path.isAbsolute(source) && importer) {
-          source = path.resolve(importer, '..', source)
-        }
+      if (!path.isAbsolute(source) && importer) {
+        source = path.resolve(importer, '..', source)
+      }
 
-        const isAsync = await getIsAsync()
-        const resolved = await nextResolve(pathToUrl(isAsync, source), {
+      try {
+        const resolved = await nextResolve(pathToUrl(isRequire, source), {
           parentURL: importer,
           conditions: options?.conditions,
           importAttributes: options?.attributes,

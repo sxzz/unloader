@@ -7,9 +7,9 @@ export function urlToPath(url: string | undefined): string | undefined {
   return url.startsWith('file://') ? fileURLToPath(url) : url
 }
 
-export function pathToUrl(isAsync: boolean, path: string): string {
+export function pathToUrl(isRequire: boolean, path: string): string {
   if (
-    !isAsync ||
+    isRequire ||
     path.startsWith('file://') ||
     path.startsWith('data://') ||
     path.startsWith('node:')
