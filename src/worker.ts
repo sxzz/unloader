@@ -1,9 +1,9 @@
 import process from 'node:process'
 import { createBirpc, type BirpcReturn } from 'birpc'
-import { createHooks } from '../hooks'
-import type { PluginContext } from '../plugin'
-import type { MainFunctions } from '../rpc.ts'
-import type { UnloaderConfig } from '../utils/config'
+import { createHooks } from './hooks'
+import type { PluginContext } from './plugin'
+import type { MainFunctions } from './rpc'
+import type { UnloaderConfig } from './utils/config'
 import type { InitializeHook, LoadHook, ResolveHook } from 'node:module'
 import type { MessagePort } from 'node:worker_threads'
 

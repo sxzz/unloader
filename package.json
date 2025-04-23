@@ -59,7 +59,7 @@
     "magic-string": "^0.30.17",
     "oxc-transform": "^0.60.0",
     "prettier": "^3.5.3",
-    "tsdown": "^0.6.9",
+    "tsdown": "^0.9.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "unplugin-quansync": "^0.3.5"

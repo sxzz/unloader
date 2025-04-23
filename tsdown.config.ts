@@ -2,10 +2,14 @@ import { defineConfig } from 'tsdown'
 import Quansync from 'unplugin-quansync/rolldown'
 
 export default defineConfig({
-  entry: ['./src/{index,register,register-sync}.ts', './src/loader/index.ts'],
+  entry: ['./src/{index,register,register-sync,worker}.ts'],
   target: 'node18.19',
   clean: true,
-  dts: { transformer: 'oxc' },
+  dts: true,
   platform: 'node',
-  plugins: [Quansync()],
+  plugins: [
+    Quansync({
+      exclude: ['**/*.d.ts'],
+    }),
+  ],
 })

@@ -3,9 +3,9 @@ import process from 'node:process'
 import { createHooks } from './hooks'
 import { createRpc } from './rpc'
 import { debug } from './utils/debug'
-import type { Data } from './loader/index'
 import type { PluginContext } from './plugin'
 import type { UnloaderConfig } from './utils/config'
+import type { Data } from './worker'
 
 export function register(inlineConfig?: string) {
   if (!module.register) {
@@ -20,7 +20,7 @@ export function register(inlineConfig?: string) {
 
   const data: Data = { port: port2, inlineConfig }
   const transferList = [port2]
-  module.register('./loader/index.js', {
+  module.register('./worker.js', {
     parentURL: import.meta.url,
     data,
     transferList,

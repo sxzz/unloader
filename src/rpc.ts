@@ -1,7 +1,7 @@
 import process from 'node:process'
 import { createBirpc, type BirpcReturn } from 'birpc'
 import { debug } from './utils/debug'
-import type { ThreadFunctions } from './loader'
+import type { ThreadFunctions } from './worker'
 import type { MessagePort } from 'node:worker_threads'
 
 const mainFunctions = {
