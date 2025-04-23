@@ -17,7 +17,7 @@ develop various loaders, such as Oxc loader, TypeScript loader, etc.
 
 ### Pre-requisites
 
-Node.js v18.19 or v20.6 and above is required for ESM support, and Node.js v23.5
+Node.js v18.19 or v20.6 and above is required for ESM support, and Node.js v22.15
 and above is required for CommonJS support.
 
 ```bash

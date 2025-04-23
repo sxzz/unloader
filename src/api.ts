@@ -34,7 +34,7 @@ export function registerSync(inlineConfig?: UnloaderConfig<true>): () => void {
   const registerHooks = module.registerHooks
   if (!registerHooks) {
     throw new Error(
-      `This version of Node.js (${process.version}) does not support module.registerHooks(). Please upgrade to Node v23.5 or above.`,
+      `This version of Node.js (${process.version}) does not support module.registerHooks(). Please upgrade to Node v22.15 or v23.5 and above.`,
     )
   }
 
