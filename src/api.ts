@@ -30,7 +30,6 @@ export function register(inlineConfig?: string) {
 }
 
 export function registerSync(inlineConfig?: UnloaderConfig<true>): () => void {
-  // @ts-expect-error
   const registerHooks = module.registerHooks
   if (!registerHooks) {
     throw new Error(
