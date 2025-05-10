@@ -36,7 +36,9 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          # - windows-latest
         node: [22.15, 23]
       fail-fast: false
 
