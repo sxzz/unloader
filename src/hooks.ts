@@ -68,7 +68,7 @@ export function createHooks(): {
 
       for (const plugin of config.plugins || []) {
         await plugin.buildStart?.(context)
-        context.debug(`loaded plugin: ${plugin.name}`)
+        context.debug(`loaded plugin: %s`, plugin.name)
       }
 
       return config
@@ -86,10 +86,7 @@ export function createHooks(): {
       // FIXME: `require`: context.conditions is `SafeSet`
       const isRequire = !Array.isArray(context.conditions)
 
-      pluginContext?.debug(
-        `resolving ${JSON.stringify(specifier)} with context`,
-        context,
-      )
+      pluginContext?.debug(`resolving %s with context %o`, specifier, context)
       if (config?.plugins) {
         for (const plugin of config.plugins) {
           const resolve = createResolve(isRequire, nextResolve)
@@ -122,9 +119,9 @@ export function createHooks(): {
             }
 
             pluginContext?.debug(
-              `resolved ${JSON.stringify(specifier)} to ${JSON.stringify(
-                output.url,
-              )} with format`,
+              `resolved %s to %s with format %s`,
+              specifier,
+              output.url,
               output.format,
             )
             return output
@@ -140,7 +137,7 @@ export function createHooks(): {
     async (url: string, context: LoadHookContext, nextLoad: NextLoad) => {
       if (deactivated || !config?.plugins) return nextLoad(url, context)
 
-      pluginContext?.debug(`load ${JSON.stringify(url)} with context`, context)
+      pluginContext?.debug(`load %s with context %o`, url, context)
 
       let result: LoadFnOutput | undefined
       const defaultFormat = context.format || 'module'
