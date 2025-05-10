@@ -175,7 +175,7 @@ export function createHooks(): {
       // transform hook
       for (const plugin of config.plugins) {
         const transformResult: ModuleSource | LoadResult | FalsyValue =
-          await plugin.transform?.(result.source, urlToPath(url), {
+          await plugin.transform?.(result.source || '', urlToPath(url), {
             format: result.format,
             conditions: context.conditions,
             attributes: context.importAttributes,

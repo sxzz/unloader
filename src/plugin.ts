@@ -72,7 +72,7 @@ export interface Plugin<Sync = false> {
     },
   ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
   transform?: (
-    code: ModuleSource | undefined,
+    code: ModuleSource,
     id: string,
     options: ResolveMeta & { format: ModuleFormat | null | undefined },
   ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
