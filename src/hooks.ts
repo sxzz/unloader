@@ -15,6 +15,7 @@ import type {
   PluginContext,
   ResolveMeta,
 } from './plugin'
+import type { MainFunctions } from './rpc'
 import type {
   LoadFnOutput,
   LoadHookContext,
@@ -83,13 +84,16 @@ export function createHooks(): {
     ) => {
       if (deactivated) return nextResolve(specifier, context)
 
-      // FIXME: `require`: context.conditions is `SafeSet`
-      const isRequire = !Array.isArray(context.conditions)
-
+      const isRequire = context.conditions[0] === 'require'
       pluginContext?.debug(`resolving %s with context %o`, specifier, context)
-      if (config?.plugins) {
+
+      if (config?.plugins && pluginContext) {
         for (const plugin of config.plugins) {
-          const resolve = createResolve(isRequire, nextResolve)
+          const resolve = createResolve(
+            nextResolve,
+            isRequire,
+            pluginContext.debug,
+          )
           const isAsync = await getIsAsync()
           const result = await plugin.resolveId?.call(
             { resolve: isAsync ? resolve : resolve.sync },
@@ -118,7 +122,7 @@ export function createHooks(): {
               }
             }
 
-            pluginContext?.debug(
+            pluginContext.debug(
               `resolved %s to %s with format %s`,
               specifier,
               output.url,
@@ -211,7 +215,11 @@ export function createHooks(): {
   return { init, resolve, load, deactivate }
 }
 
-function createResolve(isRequire: boolean, nextResolve: NextResolve) {
+function createResolve(
+  nextResolve: NextResolve,
+  isRequire: boolean,
+  debug: MainFunctions['debug'],
+) {
   return quansync(
     async (source: string, importer?: string, options?: ResolveMeta) => {
       if (!path.isAbsolute(source) && importer) {
@@ -224,12 +232,19 @@ function createResolve(isRequire: boolean, nextResolve: NextResolve) {
           conditions: options?.conditions,
           importAttributes: options?.attributes,
         })
+        debug(
+          'resolved %s to %s with format %s',
+          source,
+          resolved.url,
+          resolved.format,
+        )
         return {
           id: urlToPath(resolved.url),
           attributes: resolved.importAttributes,
           format: resolved.format,
         }
-      } catch {
+      } catch (error) {
+        debug('error resolving %s: %o', source, error)
         return null
       }
     },
