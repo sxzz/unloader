@@ -84,7 +84,10 @@ export function createHooks(): {
     ) => {
       if (deactivated) return nextResolve(specifier, context)
 
-      const isRequire = context.conditions[0] === 'require'
+      const isRequire =
+        !Array.isArray(context.conditions) ||
+        context.conditions[0] === 'require'
+
       pluginContext?.debug(`resolving %s with context %o`, specifier, context)
 
       if (config?.plugins && pluginContext) {

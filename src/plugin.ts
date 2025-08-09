@@ -1,6 +1,6 @@
 import type { UnloaderConfig } from './utils/config'
 import type { ImportAttributes, ModuleFormat, ModuleSource } from 'node:module'
-import type { MessagePort, TransferListItem } from 'node:worker_threads'
+import type { MessagePort, Transferable } from 'node:worker_threads'
 import type { QuansyncAwaitableGenerator } from 'quansync'
 
 export type Awaitable<T> = T | Promise<T>
@@ -41,7 +41,7 @@ export interface LoadResult {
 
 export interface PluginContext {
   port?: MessagePort
-  log: (message: any, transferList?: TransferListItem[]) => void
+  log: (message: any, transferList?: Transferable[]) => void
   debug: (...args: any[]) => void
 }
 
