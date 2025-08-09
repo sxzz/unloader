@@ -1,5 +1,5 @@
 import path from 'node:path'
-import remapping from '@ampproject/remapping'
+import remapping from '@jridgewell/remapping'
 import { getIsAsync } from 'quansync'
 import {
   quansync,

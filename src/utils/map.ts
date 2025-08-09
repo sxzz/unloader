@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer'
-import type { SourceMap } from '@ampproject/remapping'
+import type { SourceMap } from '@jridgewell/remapping'
 
 export function attachSourceMap(map: SourceMap, code: string): string {
   if (map) {
