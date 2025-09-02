@@ -1,7 +1,7 @@
 {
   "name": "unloader",
   "version": "0.5.0",
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.15.1",
   "description": "Node.js loader with a Rollup-like interface.",
   "type": "module",
   "license": "MIT",
@@ -42,26 +42,26 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@jridgewell/remapping": "^2.3.4",
+    "@jridgewell/remapping": "^2.3.5",
     "birpc": "^2.5.0",
     "debug": "^4.4.1",
-    "quansync": "^0.2.10",
-    "unconfig": "^7.3.2"
+    "quansync": "^0.2.11",
+    "unconfig": "^7.3.3"
   },
   "devDependencies": {
-    "@quansync/fs": "^0.1.4",
-    "@sxzz/eslint-config": "^7.1.2",
-    "@sxzz/prettier-config": "^2.2.3",
+    "@quansync/fs": "^0.1.5",
+    "@sxzz/eslint-config": "^7.1.4",
+    "@sxzz/prettier-config": "^2.2.4",
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.2.1",
-    "bumpp": "^10.2.2",
-    "eslint": "^9.33.0",
-    "magic-string": "^0.30.17",
+    "@types/node": "^24.3.0",
+    "bumpp": "^10.2.3",
+    "eslint": "^9.34.0",
+    "magic-string": "^0.30.18",
     "prettier": "^3.6.2",
-    "tsdown": "^0.13.4",
-    "tsx": "^4.20.3",
+    "tsdown": "^0.14.2",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "unplugin-quansync": "^0.4.3"
+    "unplugin-quansync": "^0.4.4"
   },
   "engines": {
     "node": ">=20.6.0"
