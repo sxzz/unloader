@@ -1,7 +1,7 @@
 {
   "name": "unloader",
   "version": "0.5.0",
-  "packageManager": "pnpm@10.17.1",
+  "packageManager": "pnpm@10.18.1",
   "description": "Node.js loader with a Rollup-like interface.",
   "type": "module",
   "license": "MIT",
@@ -50,18 +50,18 @@
   },
   "devDependencies": {
     "@quansync/fs": "^0.1.5",
-    "@sxzz/eslint-config": "^7.2.6",
+    "@sxzz/eslint-config": "^7.2.7",
     "@sxzz/prettier-config": "^2.2.4",
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.5.2",
-    "bumpp": "^10.2.3",
-    "eslint": "^9.36.0",
+    "@types/node": "^24.7.0",
+    "bumpp": "^10.3.1",
+    "eslint": "^9.37.0",
     "magic-string": "^0.30.19",
     "prettier": "^3.6.2",
-    "tsdown": "^0.15.5",
+    "tsdown": "^0.15.6",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.2",
-    "unplugin-quansync": "^0.4.4"
+    "typescript": "^5.9.3",
+    "unplugin-quansync": "^0.4.5"
   },
   "engines": {
     "node": ">=20.6.0"
