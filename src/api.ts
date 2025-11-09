@@ -2,6 +2,7 @@ import module from 'node:module'
 import process from 'node:process'
 import { createHooks } from './hooks'
 import { createRpc } from './rpc'
+import { sharedPluginContext } from './utils/context'
 import { debug } from './utils/debug'
 import type { PluginContext } from './plugin'
 import type { UnloaderConfig } from './utils/config'
@@ -40,6 +41,7 @@ export function registerSync(inlineConfig?: UnloaderConfig<true>): () => void {
   const { init, resolve, load, deactivate } = createHooks()
 
   const context: PluginContext = {
+    ...sharedPluginContext,
     log: (message) => console.info(message),
     debug,
   }

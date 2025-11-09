@@ -44,6 +44,8 @@ export interface PluginContext {
   port?: MessagePort
   log: (message: any, transferList?: Transferable[]) => void
   debug: (...args: any[]) => void
+  error: (message: string | Error) => never
+  meta: { unloaderVersion: string }
 }
 
 export type ConditionalAwaitable<C, T> =
@@ -75,21 +77,26 @@ export type HookFilterExtension<K extends keyof FunctionPluginHooks<false>> =
         : {}
 
 export interface FunctionPluginHooks<Sync> {
-  options: (config: UnloaderConfig<Sync>) => UnloaderConfig<Sync> | FalsyValue
-  buildStart: (context: PluginContext) => ConditionalAwaitable<Sync, void>
+  options: (
+    this: PluginContext,
+    config: UnloaderConfig<Sync>,
+  ) => UnloaderConfig<Sync> | FalsyValue
+  buildStart: (this: PluginContext) => ConditionalAwaitable<Sync, void>
   resolveId: (
-    this: { resolve: ResolveFn<Sync> },
+    this: PluginContext & { resolve: ResolveFn<Sync> },
     source: string,
     importer: string | undefined,
     options: ResolveMeta,
   ) => ConditionalAwaitable<Sync, string | ResolvedId | FalsyValue>
   load: (
+    this: PluginContext,
     id: string,
     options: ResolveMeta & {
       format: ModuleFormat | (string & {}) | null | undefined
     },
   ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
   transform: (
+    this: PluginContext,
     code: ModuleSource,
     id: string,
     options: ResolveMeta & { format: string | null | undefined },

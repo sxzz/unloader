@@ -1,6 +1,7 @@
 import process from 'node:process'
 import { createBirpc, type BirpcReturn } from 'birpc'
 import { createHooks } from './hooks'
+import { sharedPluginContext } from './utils/context'
 import type { PluginContext } from './plugin'
 import type { MainFunctions } from './rpc'
 import type { UnloaderConfig } from './utils/config'
@@ -31,6 +32,7 @@ export const initialize: InitializeHook = async (_data: Data) => {
   })
 
   const context: PluginContext = {
+    ...sharedPluginContext,
     port,
     log: (...args) => rpc.log(...args),
     debug: (...args) => rpc.debug(...args),

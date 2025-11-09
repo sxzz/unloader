@@ -67,12 +67,12 @@ export function createHooks(): {
 
       for (const plugin of config.plugins || []) {
         const { handler } = normalizePluginHook(plugin, 'options')
-        config = handler?.(config) || config
+        config = handler?.call(context, config) || config
       }
 
       for (const plugin of config.plugins || []) {
         const { handler } = normalizePluginHook(plugin, 'buildStart')
-        await handler?.(context)
+        await handler?.call(context)
         context.debug(`loaded plugin: %s`, plugin.name)
       }
 
@@ -111,7 +111,10 @@ export function createHooks(): {
           }
 
           const result = await handler?.call(
-            { resolve: isAsync ? resolve : resolve.sync },
+            {
+              resolve: isAsync ? resolve : resolve.sync,
+              ...pluginContext,
+            },
             id,
             urlToPath(context.parentURL),
             {
@@ -172,7 +175,7 @@ export function createHooks(): {
           continue
         }
 
-        const loadResult = await handler?.(id, {
+        const loadResult = await handler?.call(pluginContext!, id, {
           format: context.format,
           conditions: context.conditions,
           attributes: context.importAttributes,
@@ -214,7 +217,7 @@ export function createHooks(): {
         }
 
         const transformResult: ModuleSource | LoadResult | FalsyValue =
-          await handler?.(code, id, {
+          await handler?.call(pluginContext!, code, id, {
             format: result.format,
             conditions: context.conditions,
             attributes: context.importAttributes,

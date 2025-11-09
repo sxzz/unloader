@@ -1,5 +1,6 @@
 // @ts-check
 
+import assert from 'node:assert'
 import path from 'node:path'
 import { readFile } from '@quansync/fs'
 import MagicString from 'magic-string'
@@ -14,10 +15,12 @@ export function demoPlugin(): Plugin {
   return {
     name: 'demo-plugin',
     options(config) {
+      assert(typeof this.meta.unloaderVersion === 'string')
       config.sourcemap = true
     },
-    buildStart(_context) {
-      context = _context
+    buildStart() {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      context = this
       context.log('[plugin] build start')
     },
     resolveId: {
