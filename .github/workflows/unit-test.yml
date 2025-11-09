@@ -8,16 +8,9 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup JS
-        uses: sxzz/workflows/setup-js@v1
-
-      - name: Lint
-        run: pnpm run lint
-
-      - name: Typecheck
-        run: pnpm run typecheck
+    uses: sxzz/workflows/.github/workflows/unit-test.yml@v1
+    with:
+      skip-test: true
 
   test:
     runs-on: ${{ matrix.os }}
