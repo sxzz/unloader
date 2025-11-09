@@ -65,7 +65,7 @@
     "unplugin-quansync": "^0.4.5"
   },
   "engines": {
-    "node": ">=20.6.0"
+    "node": ">=20.19.0"
   },
   "prettier": "@sxzz/prettier-config"
 }
