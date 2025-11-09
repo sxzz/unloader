@@ -27,7 +27,7 @@ jobs:
         os:
           - ubuntu-latest
           - windows-latest
-        node: [22.15, 22, 24, 25]
+        node: [20.6, 22.15, 22, 24, 25]
       fail-fast: false
 
     steps:

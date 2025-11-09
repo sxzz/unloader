@@ -1,10 +1,14 @@
 // @ts-check
 import assert from 'node:assert'
 import { createRequire } from 'node:module'
+import process from 'node:process'
 import { it } from 'node:test'
 import { register, registerSync } from '../dist/index.mjs'
 
 const require = createRequire(import.meta.url)
+
+const isNode20 = process.versions.node.startsWith('20.')
+const skipIfNode20 = isNode20 ? it.skip : it
 
 it('register async', async () => {
   const unregister = register()
@@ -21,7 +25,7 @@ it('register async', async () => {
   unregister()
 })
 
-it('register sync', () => {
+skipIfNode20('register sync', () => {
   const unregister = require('../dist/index.mjs').registerSync()
 
   // @ts-expect-error
@@ -38,7 +42,7 @@ it('register sync', () => {
 it('unregistered', async () => {
   // @ts-expect-error
   await assert.rejects(() => import('./prefix_trace'))
-  assert.doesNotThrow(() => require('./prefix_trace'))
+  if (!isNode20) assert.doesNotThrow(() => require('./prefix_trace'))
 
   clearRequireCache()
   assert.throws(() => require('./prefix_trace'))
@@ -71,7 +75,7 @@ it('resolve inline config (async)', () => {
   assert.throws(() => register(specifier), /inline-plugin-async/)
 })
 
-it('resolve inline config (sync)', () => {
+skipIfNode20('resolve inline config (sync)', () => {
   let flag = false
   const unregister = registerSync({
     plugins: [
