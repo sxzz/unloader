@@ -2,7 +2,7 @@
 import assert from 'node:assert'
 import { createRequire } from 'node:module'
 import { it } from 'node:test'
-import { register, registerSync } from '../dist/index.js'
+import { register, registerSync } from '../dist/index.mjs'
 
 const require = createRequire(import.meta.url)
 
@@ -22,7 +22,7 @@ it('register async', async () => {
 })
 
 it('register sync', () => {
-  const unregister = require('../dist/index.js').registerSync()
+  const unregister = require('../dist/index.mjs').registerSync()
 
   // @ts-expect-error
   const { stack } = require('./prefix_trace')

@@ -20,7 +20,7 @@ export function register(inlineConfig?: string) {
 
   const data: Data = { port: port2, inlineConfig }
   const transferList = [port2]
-  module.register('./worker.js', {
+  module.register('./worker.mjs', {
     parentURL: import.meta.url,
     data,
     transferList,
