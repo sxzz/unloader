@@ -10,20 +10,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4.2.0
-
-      - name: Set node LTS
-        uses: actions/setup-node@v6
-        with:
-          node-version: lts/*
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install
+      - name: Setup JS
+        uses: sxzz/workflows/setup-js@v1
 
       - name: Lint
         run: pnpm run lint
@@ -38,25 +26,15 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          # - windows-latest
-        node: [22.15, 22, 24]
+          - windows-latest
+        node: [22.15, 22, 24, 25]
       fail-fast: false
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4.2.0
-
-      - name: Set node ${{ matrix.node }}
-        uses: actions/setup-node@v6
+      - name: Setup JS
+        uses: sxzz/workflows/setup-js@v1
         with:
           node-version: ${{ matrix.node }}
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install
 
       - name: Build
         run: pnpm run build
