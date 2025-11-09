@@ -1,11 +1,14 @@
 // @ts-check
 
+import path from 'node:path'
 import { readFile } from '@quansync/fs'
 import MagicString from 'magic-string'
 import { quansync } from 'quansync'
 import type { Plugin, PluginContext, ResolvedId, ResolveFn } from '../src'
 
 let context: PluginContext
+
+const resolvedVirtualMod = path.resolve('/virtual-mod')
 
 export function demoPlugin(): Plugin {
   return {
@@ -25,7 +28,7 @@ export function demoPlugin(): Plugin {
     ) {
       if (source.startsWith('node:')) return
       if (source === 'virtual-mod') {
-        return '/virtual-mod'
+        return resolvedVirtualMod
       }
 
       const id = `${source.replace('prefix_', '')}.js`
@@ -37,7 +40,7 @@ export function demoPlugin(): Plugin {
       if (result) return result
     }),
     load: quansync(function* (id: string) {
-      if (id === '/virtual-mod') {
+      if (id === resolvedVirtualMod) {
         return { code: 'export const count = 42' }
       }
       if (id.endsWith('trace.js')) {
