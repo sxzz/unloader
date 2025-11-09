@@ -1,3 +1,4 @@
+import type { StringFilter } from './plugin-filter'
 import type { UnloaderConfig } from './utils/config'
 import type { ImportAttributes, ModuleFormat, ModuleSource } from 'node:module'
 import type { MessagePort, Transferable } from 'node:worker_threads'
@@ -55,25 +56,69 @@ export type ResolveFn<Sync = false> = (
   options?: ResolveMeta,
 ) => ConditionalAwaitable<Sync, ResolvedId | null>
 
-export interface Plugin<Sync = false> {
+export interface Plugin<Sync = false> extends Partial<PluginHooks<Sync>> {
   name: string
-  options?: (config: UnloaderConfig<Sync>) => UnloaderConfig<Sync> | FalsyValue
-  buildStart?: (context: PluginContext) => ConditionalAwaitable<Sync, void>
-  resolveId?: (
+}
+
+export interface HookFilter {
+  id?: StringFilter | undefined
+  code?: StringFilter | undefined
+}
+
+export type HookFilterExtension<K extends keyof FunctionPluginHooks<false>> =
+  K extends 'transform'
+    ? { filter?: HookFilter | undefined }
+    : K extends 'load'
+      ? { filter?: Pick<HookFilter, 'id'> | undefined }
+      : K extends 'resolveId'
+        ? { filter?: { id?: StringFilter<RegExp> | undefined } } | undefined
+        : {}
+
+export interface FunctionPluginHooks<Sync> {
+  options: (config: UnloaderConfig<Sync>) => UnloaderConfig<Sync> | FalsyValue
+  buildStart: (context: PluginContext) => ConditionalAwaitable<Sync, void>
+  resolveId: (
     this: { resolve: ResolveFn<Sync> },
     source: string,
     importer: string | undefined,
     options: ResolveMeta,
   ) => ConditionalAwaitable<Sync, string | ResolvedId | FalsyValue>
-  load?: (
+  load: (
     id: string,
     options: ResolveMeta & {
       format: ModuleFormat | (string & {}) | null | undefined
     },
   ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
-  transform?: (
+  transform: (
     code: ModuleSource,
     id: string,
     options: ResolveMeta & { format: string | null | undefined },
   ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
+}
+
+export type ObjectHook<T, O = {}> = T | ({ handler: T } & O)
+
+export type PluginHooks<Sync> = {
+  [K in keyof FunctionPluginHooks<Sync>]: ObjectHook<
+    FunctionPluginHooks<Sync>[K],
+    HookFilterExtension<K>
+  >
+}
+
+export function normalizePluginHook<K extends keyof PluginHooks<false>>(
+  plugin: Plugin<false>,
+  key: K,
+): Partial<
+  {
+    handler?: FunctionPluginHooks<false>[K]
+  } & HookFilterExtension<K>
+> {
+  const hook = plugin?.[key]
+  if (!hook) {
+    return {}
+  }
+  if (typeof hook === 'function') {
+    return { handler: hook } as any
+  }
+  return hook as any
 }

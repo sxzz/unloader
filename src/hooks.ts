@@ -6,15 +6,17 @@ import {
   type QuansyncAwaitableGenerator,
   type QuansyncFn,
 } from 'quansync/macro'
+import {
+  normalizePluginHook,
+  type FalsyValue,
+  type LoadResult,
+  type PluginContext,
+  type ResolveMeta,
+} from './plugin'
+import { createFilterForId, createFilterForTransform } from './plugin-filter'
 import { loadConfig, type UnloaderConfig } from './utils/config'
 import { attachSourceMap } from './utils/map'
 import { pathToUrl, urlToPath } from './utils/url'
-import type {
-  FalsyValue,
-  LoadResult,
-  PluginContext,
-  ResolveMeta,
-} from './plugin'
 import type { MainFunctions } from './rpc'
 import type {
   LoadFnOutput,
@@ -64,11 +66,13 @@ export function createHooks(): {
       config = inlineConfig || (await loadConfig())
 
       for (const plugin of config.plugins || []) {
-        config = plugin.options?.(config) || config
+        const { handler } = normalizePluginHook(plugin, 'options')
+        config = handler?.(config) || config
       }
 
       for (const plugin of config.plugins || []) {
-        await plugin.buildStart?.(context)
+        const { handler } = normalizePluginHook(plugin, 'buildStart')
+        await handler?.(context)
         context.debug(`loaded plugin: %s`, plugin.name)
       }
 
@@ -98,9 +102,17 @@ export function createHooks(): {
             pluginContext.debug,
           )
           const isAsync = await getIsAsync()
-          const result = await plugin.resolveId?.call(
+          const { handler, filter } = normalizePluginHook(plugin, 'resolveId')
+
+          const filterFn = createFilterForId(filter?.id)
+          const id = urlToPath(specifier)
+          if (filterFn && !filterFn(id)) {
+            continue
+          }
+
+          const result = await handler?.call(
             { resolve: isAsync ? resolve : resolve.sync },
-            urlToPath(specifier),
+            id,
             urlToPath(context.parentURL),
             {
               conditions: context.conditions,
@@ -152,7 +164,15 @@ export function createHooks(): {
 
       // load hook
       for (const plugin of config.plugins) {
-        const loadResult = await plugin.load?.(urlToPath(url), {
+        const { handler, filter } = normalizePluginHook(plugin, 'load')
+
+        const filterFn = createFilterForId(filter?.id)
+        const id = urlToPath(url)
+        if (filterFn && !filterFn(id)) {
+          continue
+        }
+
+        const loadResult = await handler?.(id, {
           format: context.format,
           conditions: context.conditions,
           attributes: context.importAttributes,
@@ -181,8 +201,20 @@ export function createHooks(): {
 
       // transform hook
       for (const plugin of config.plugins) {
+        const { handler, filter } = normalizePluginHook(plugin, 'transform')
+
+        const filterFn = createFilterForTransform(filter?.id, filter?.code)
+        const code: ModuleSource = result.source || ''
+        const id = urlToPath(url)
+        if (
+          filterFn &&
+          (typeof code !== 'string' || !filterFn(id, code || ''))
+        ) {
+          continue
+        }
+
         const transformResult: ModuleSource | LoadResult | FalsyValue =
-          await plugin.transform?.(result.source || '', urlToPath(url), {
+          await handler?.(code, id, {
             format: result.format,
             conditions: context.conditions,
             attributes: context.importAttributes,

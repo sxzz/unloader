@@ -17,6 +17,9 @@ importers:
       debug:
         specifier: ^4.4.3
         version: 4.4.3
+      picomatch:
+        specifier: ^4.0.3
+        version: 4.0.3
       quansync:
         specifier: ^0.2.11
         version: 0.2.11
@@ -24,6 +27,9 @@ importers:
         specifier: ^7.4.0
         version: 7.4.0
     devDependencies:
+      '@antfu/utils':
+        specifier: ^9.3.0
+        version: 9.3.0
       '@quansync/fs':
         specifier: ^0.1.5
         version: 0.1.5
@@ -39,6 +45,9 @@ importers:
       '@types/node':
         specifier: ^24.10.0
         version: 24.10.0
+      '@types/picomatch':
+        specifier: ^4.0.2
+        version: 4.0.2
       bumpp:
         specifier: ^10.3.1
         version: 10.3.1
@@ -68,6 +77,9 @@ packages:
 
   '@antfu/utils@8.1.1':
     resolution: {integrity: sha512-Mex9nXf9vR6AhcXmMrlz/HVgYYZpVGJ6YlPgwl7UnaFpnshXs6EK/oa5Gpf3CzENMjkvEx2tQtntGnb7UtSTOQ==}
+
+  '@antfu/utils@9.3.0':
+    resolution: {integrity: sha512-9hFT4RauhcUzqOE4f1+frMKLZrgNog5b06I7VmZQV1BkvwvqrbC8EBZf3L1eEL2AKb6rNKjER0sEvJiSP1FXEA==}
 
   '@babel/generator@7.28.5':
     resolution: {integrity: sha512-3EwLFhZ38J4VyIP6WNtt2kUdW9dokXA9Cr4IVIFHuCpZ3H8/YFOl5JjZHisrn1fATPBmKKqXzDFvh9fUwHz6CQ==}
@@ -626,6 +638,9 @@ packages:
 
   '@types/node@24.10.0':
     resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
+
+  '@types/picomatch@4.0.2':
+    resolution: {integrity: sha512-qHHxQ+P9PysNEGbALT8f8YOSHW0KJu6l2xU8DYY0fu/EmGxXdVnuTLvFUvBgPJMSqXq29SYHveejeAha+4AYgA==}
 
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
@@ -2115,6 +2130,8 @@ snapshots:
   '@antfu/utils@8.1.1':
     optional: true
 
+  '@antfu/utils@9.3.0': {}
+
   '@babel/generator@7.28.5':
     dependencies:
       '@babel/parser': 7.28.5
@@ -2576,6 +2593,8 @@ snapshots:
   '@types/node@24.10.0':
     dependencies:
       undici-types: 7.16.0
+
+  '@types/picomatch@4.0.2': {}
 
   '@types/unist@3.0.3': {}
 
