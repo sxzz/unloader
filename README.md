@@ -1,6 +1,8 @@
-# unloader [![npm](https://img.shields.io/npm/v/unloader.svg)](https://npmjs.com/package/unloader)
+# unloader
 
-[![Unit Test](https://github.com/sxzz/unloader/actions/workflows/unit-test.yml/badge.svg)](https://github.com/sxzz/unloader/actions/workflows/unit-test.yml)
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![Unit Test][unit-test-src]][unit-test-href]
 
 Node.js loader with a Rollup-like interface.
 
@@ -191,4 +193,13 @@ export default {
 
 ## License
 
-[MIT](./LICENSE) License © 2025 [三咲智子 Kevin Deng](https://github.com/sxzz)
+[MIT](./LICENSE) License © 2025-PRESENT [Kevin Deng](https://github.com/sxzz)
+
+<!-- Badges -->
+
+[npm-version-src]: https://img.shields.io/npm/v/unloader.svg
+[npm-version-href]: https://npmjs.com/package/unloader
+[npm-downloads-src]: https://img.shields.io/npm/dm/unloader
+[npm-downloads-href]: https://www.npmcharts.com/compare/unloader?interval=30
+[unit-test-src]: https://github.com/sxzz/unloader/actions/workflows/unit-test.yml/badge.svg
+[unit-test-href]: https://github.com/sxzz/unloader/actions/workflows/unit-test.yml
