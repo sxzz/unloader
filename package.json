@@ -1,6 +1,6 @@
 {
   "name": "unloader",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "packageManager": "pnpm@10.20.0",
   "description": "Node.js loader with a Rollup-like interface.",
   "type": "module",
