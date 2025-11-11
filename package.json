@@ -48,20 +48,20 @@
     "obug": "^0.1.1",
     "picomatch": "^4.0.3",
     "quansync": "^0.2.11",
-    "unconfig": "^7.4.0"
+    "unconfig": "^7.4.1"
   },
   "devDependencies": {
     "@antfu/utils": "^9.3.0",
     "@quansync/fs": "^0.1.5",
-    "@sxzz/eslint-config": "^7.2.8",
+    "@sxzz/eslint-config": "^7.2.10",
     "@sxzz/prettier-config": "^2.2.4",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "@types/picomatch": "^4.0.2",
     "bumpp": "^10.3.1",
     "eslint": "^9.39.1",
     "magic-string": "^0.30.21",
     "prettier": "^3.6.2",
-    "tsdown": "^0.16.1",
+    "tsdown": "^0.16.3",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "unplugin-quansync": "^0.4.5"
