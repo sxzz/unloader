@@ -45,7 +45,7 @@
   "dependencies": {
     "@jridgewell/remapping": "^2.3.5",
     "birpc": "^2.8.0",
-    "debug": "^4.4.3",
+    "obug": "^0.1.1",
     "picomatch": "^4.0.3",
     "quansync": "^0.2.11",
     "unconfig": "^7.4.0"
@@ -55,7 +55,6 @@
     "@quansync/fs": "^0.1.5",
     "@sxzz/eslint-config": "^7.2.8",
     "@sxzz/prettier-config": "^2.2.4",
-    "@types/debug": "^4.1.12",
     "@types/node": "^24.10.0",
     "@types/picomatch": "^4.0.2",
     "bumpp": "^10.3.1",

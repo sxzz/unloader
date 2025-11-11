@@ -1,3 +1,3 @@
-import Debug from 'debug'
+import Debug, { type Debugger } from 'obug'
 
-export const debug: Debug.Debugger = Debug('unloader')
+export const debug: Debugger = Debug('unloader')
