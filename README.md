@@ -19,8 +19,7 @@ develop various loaders, such as Oxc loader, TypeScript loader, etc.
 
 ### Pre-requisites
 
-- **ESM**: Node.js v18.19 or v20.6 and above
-- **CJS**: Node.js v22.15 and above
+Node.js v22.18 and above
 
 ```bash
 npm i unloader
