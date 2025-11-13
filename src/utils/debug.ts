@@ -1,3 +1,3 @@
-import Debug, { type Debugger } from 'obug'
+import { createDebug, type Debugger } from 'obug'
 
-export const debug: Debugger = Debug('unloader')
+export const debug: Debugger = createDebug('unloader')
