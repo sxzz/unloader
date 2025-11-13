@@ -8,7 +8,9 @@ import type { PluginContext } from './plugin'
 import type { UnloaderConfig } from './utils/config'
 import type { Data } from './worker'
 
-export function register(inlineConfig?: string) {
+export async function register(
+  inlineConfig?: string,
+): Promise<() => Promise<void>> {
   if (!module.register) {
     throw new Error(
       `This version of Node.js (${process.version}) does not support module.register(). Please upgrade to Node v20.6 and above.`,
@@ -27,7 +29,12 @@ export function register(inlineConfig?: string) {
     transferList,
   })
 
-  return (): Promise<void> => rpc.deactivate()
+  const sourcemap = await rpc.ping()
+  if (sourcemap) {
+    process.setSourceMapsEnabled(true)
+  }
+
+  return () => rpc.deactivate()
 }
 
 export function registerSync(inlineConfig?: UnloaderConfig<true>): () => void {

@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { createBirpc, type BirpcReturn } from 'birpc'
 import { debug } from './utils/debug'
 import type { ThreadFunctions } from './worker'
@@ -10,9 +9,6 @@ const mainFunctions = {
   },
   debug(...args: any[]): void {
     ;(debug as any)(...args)
-  },
-  enableSourceMap(enabled: boolean): void {
-    process.setSourceMapsEnabled(enabled)
   },
 }
 export type MainFunctions = typeof mainFunctions

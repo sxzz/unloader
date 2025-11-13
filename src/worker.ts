@@ -14,10 +14,15 @@ export interface Data {
 }
 let data: Data
 
+const { promise: promisePong, resolve: pong } = Promise.withResolvers<boolean>()
+
 const hooks = createHooks()
 const threadFunctions = {
   deactivate(): void {
     hooks.deactivate()
+  },
+  ping(): Promise<boolean> {
+    return promisePong
   },
 }
 export type ThreadFunctions = typeof threadFunctions
@@ -42,9 +47,7 @@ export const initialize: InitializeHook = async (_data: Data) => {
     inlineConfig = (await import(data.inlineConfig)).default
   }
   const config = await hooks.init(context, inlineConfig)
-  if (config.sourcemap && !process.sourceMapsEnabled) {
-    rpc.enableSourceMap(true)
-  }
+  pong(!!(config.sourcemap && !process.sourceMapsEnabled))
 }
 export const resolve: ResolveHook = hooks.resolve.async
 export const load: LoadHook = hooks.load.async

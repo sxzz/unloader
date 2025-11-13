@@ -11,7 +11,7 @@ const isNode20 = process.versions.node.startsWith('20.')
 const skipIfNode20 = isNode20 ? it.skip : it
 
 it('register async', async () => {
-  const unregister = register()
+  const unregister = await register()
   assert(typeof unregister === 'function')
 
   // @ts-expect-error
@@ -54,7 +54,7 @@ function clearRequireCache() {
   })
 }
 
-it('resolve inline config (async)', () => {
+it('resolve inline config (async)', async () => {
   const config = function config() {
     return {
       plugins: [
@@ -72,7 +72,7 @@ it('resolve inline config (async)', () => {
     '',
   )
   const specifier = `data:text/javascript,${code}`
-  assert.throws(() => register(specifier), /inline-plugin-async/)
+  await assert.rejects(() => register(specifier), /inline-plugin-async/)
 })
 
 skipIfNode20('resolve inline config (sync)', () => {

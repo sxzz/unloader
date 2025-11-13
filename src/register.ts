@@ -1,3 +1,3 @@
 import { register } from './api'
 
-register()
+await register()
