@@ -1,7 +1,7 @@
 {
   "name": "unloader",
   "version": "0.8.0",
-  "packageManager": "pnpm@10.21.0",
+  "packageManager": "pnpm@10.22.0",
   "description": "Node.js loader with a Rollup-like interface.",
   "type": "module",
   "license": "MIT",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@jridgewell/remapping": "^2.3.5",
     "birpc": "^2.8.0",
-    "obug": "^2.0.0-beta.1",
+    "obug": "^2.0.0",
     "picomatch": "^4.0.3",
     "quansync": "^0.2.11",
     "unconfig": "^7.4.1"
@@ -61,7 +61,7 @@
     "eslint": "^9.39.1",
     "magic-string": "^0.30.21",
     "prettier": "^3.6.2",
-    "tsdown": "^0.16.3",
+    "tsdown": "^0.16.4",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "unplugin-quansync": "^0.4.5"
