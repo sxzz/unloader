@@ -1,7 +1,7 @@
 import type { UnloaderConfig } from './utils/config.ts'
 
-export * from './plugin'
 export * from './api'
+export * from './plugin'
 export * from './utils/config'
 
 export function defineConfig(config: UnloaderConfig): UnloaderConfig {

@@ -1,26 +1,20 @@
 {
   "name": "unloader",
+  "type": "module",
   "version": "0.8.0",
   "packageManager": "pnpm@10.24.0",
   "description": "Node.js loader with a Rollup-like interface.",
-  "type": "module",
+  "author": "Kevin Deng <sxzz@sxzz.moe>",
   "license": "MIT",
+  "funding": "https://github.com/sponsors/sxzz",
   "homepage": "https://github.com/sxzz/unloader#readme",
-  "bugs": {
-    "url": "https://github.com/sxzz/unloader/issues"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sxzz/unloader.git"
   },
-  "author": "Kevin Deng <sxzz@sxzz.moe>",
-  "funding": "https://github.com/sponsors/sxzz",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "bugs": {
+    "url": "https://github.com/sxzz/unloader/issues"
+  },
   "exports": {
     ".": "./dist/index.mjs",
     "./register": "./dist/register.mjs",
@@ -28,8 +22,17 @@
     "./worker": "./dist/worker.mjs",
     "./package.json": "./package.json"
   },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=22.18.0"
   },
   "scripts": {
     "lint": "eslint --cache .",
@@ -44,30 +47,27 @@
   },
   "dependencies": {
     "@jridgewell/remapping": "^2.3.5",
-    "birpc": "^2.8.0",
+    "birpc": "^3.0.0",
     "obug": "^2.1.1",
     "picomatch": "^4.0.3",
-    "quansync": "^0.2.11",
+    "quansync": "^0.3.0",
     "unconfig": "^7.4.1"
   },
   "devDependencies": {
     "@antfu/utils": "^9.3.0",
-    "@quansync/fs": "^0.1.5",
-    "@sxzz/eslint-config": "^7.4.0",
+    "@quansync/fs": "^0.1.6",
+    "@sxzz/eslint-config": "^7.4.1",
     "@sxzz/prettier-config": "^2.2.6",
     "@types/node": "^24.10.1",
     "@types/picomatch": "^4.0.2",
     "bumpp": "^10.3.2",
     "eslint": "^9.39.1",
     "magic-string": "^0.30.21",
-    "prettier": "^3.7.3",
-    "tsdown": "^0.16.8",
+    "prettier": "^3.7.4",
+    "tsdown": "^0.17.0-beta.6",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "unplugin-quansync": "^0.4.5"
-  },
-  "engines": {
-    "node": ">=22.18.0"
   },
   "prettier": "@sxzz/prettier-config"
 }
