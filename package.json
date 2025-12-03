@@ -40,7 +40,7 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "node --test",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsgo --noEmit",
     "format": "prettier --cache --write .",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build"
@@ -60,6 +60,7 @@
     "@sxzz/prettier-config": "^2.2.6",
     "@types/node": "^24.10.1",
     "@types/picomatch": "^4.0.2",
+    "@typescript/native-preview": "7.0.0-dev.20251203.1",
     "bumpp": "^10.3.2",
     "eslint": "^9.39.1",
     "magic-string": "^0.30.21",
