@@ -50,25 +50,25 @@
     "birpc": "^3.0.0",
     "obug": "^2.1.1",
     "picomatch": "^4.0.3",
-    "quansync": "^0.3.0",
-    "unconfig": "^7.4.1"
+    "quansync": "^1.0.0",
+    "unconfig": "^7.4.2"
   },
   "devDependencies": {
     "@antfu/utils": "^9.3.0",
-    "@quansync/fs": "^0.1.6",
+    "@quansync/fs": "^1.0.0",
     "@sxzz/eslint-config": "^7.4.1",
     "@sxzz/prettier-config": "^2.2.6",
     "@types/node": "^24.10.1",
     "@types/picomatch": "^4.0.2",
-    "@typescript/native-preview": "7.0.0-dev.20251203.1",
+    "@typescript/native-preview": "7.0.0-dev.20251204.1",
     "bumpp": "^10.3.2",
     "eslint": "^9.39.1",
     "magic-string": "^0.30.21",
     "prettier": "^3.7.4",
-    "tsdown": "^0.17.0-beta.6",
+    "tsdown": "^0.17.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "unplugin-quansync": "^0.4.5"
+    "unplugin-quansync": "^0.5.0"
   },
   "prettier": "@sxzz/prettier-config"
 }
