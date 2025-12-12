@@ -7,30 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  lint:
+  unit-test:
     uses: sxzz/workflows/.github/workflows/unit-test.yml@v1
     with:
-      skip-test: true
-
-  test:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-        node: [22.18, 22, 24, 25]
-      fail-fast: false
-
-    steps:
-      - name: Setup JS
-        uses: sxzz/workflows/setup-js@v1
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Test
-        run: pnpm run test
+      node-versions: '22.18, 22, 24, 25'
