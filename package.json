@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@jridgewell/remapping": "^2.3.5",
-    "birpc": "^3.0.0",
+    "birpc": "^4.0.0",
     "obug": "^2.1.1",
     "picomatch": "^4.0.3",
     "quansync": "^1.0.0",
