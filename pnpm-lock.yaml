@@ -19,7 +19,7 @@ importers:
         version: 2.1.1
       picomatch:
         specifier: ^4.0.3
-        version: 4.0.3
+        version: 4.0.4
       quansync:
         specifier: ^1.0.0
         version: 1.0.0
@@ -1516,8 +1516,8 @@ packages:
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
-  picomatch@4.0.3:
-    resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
+  picomatch@4.0.4:
+    resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
   pluralize@8.0.0:
@@ -2852,9 +2852,9 @@ snapshots:
     dependencies:
       format: 0.2.2
 
-  fdir@6.5.0(picomatch@4.0.3):
+  fdir@6.5.0(picomatch@4.0.4):
     optionalDependencies:
-      picomatch: 4.0.3
+      picomatch: 4.0.4
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -3352,7 +3352,7 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  picomatch@4.0.3: {}
+  picomatch@4.0.4: {}
 
   pluralize@8.0.0: {}
 
@@ -3476,8 +3476,8 @@ snapshots:
 
   tinyglobby@0.2.15:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.4)
+      picomatch: 4.0.4
 
   to-valid-identifier@1.0.0:
     dependencies:
@@ -3492,7 +3492,7 @@ snapshots:
 
   ts-declaration-location@1.0.7(typescript@5.9.3):
     dependencies:
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       typescript: 5.9.3
 
   tsdown@0.21.4(@typescript/native-preview@7.0.0-dev.20260322.1)(synckit@0.11.12)(typescript@5.9.3):
@@ -3504,7 +3504,7 @@ snapshots:
       hookable: 6.1.0
       import-without-cache: 0.2.5
       obug: 2.1.1
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       rolldown: 1.0.0-rc.9
       rolldown-plugin-dts: 0.22.5(@typescript/native-preview@7.0.0-dev.20260322.1)(rolldown@1.0.0-rc.9)(typescript@5.9.3)
       semver: 7.7.4
@@ -3595,7 +3595,7 @@ snapshots:
   unplugin@3.0.0:
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       webpack-virtual-modules: 0.6.2
 
   unrun@0.2.32(synckit@0.11.12):
