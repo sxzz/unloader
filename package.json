@@ -67,7 +67,7 @@
     "prettier": "^3.8.1",
     "tsdown": "^0.21.7",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "unplugin-quansync": "^0.5.2"
   },
   "prettier": "@sxzz/prettier-config"
