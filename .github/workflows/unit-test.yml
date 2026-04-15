@@ -8,6 +8,6 @@ on:
 
 jobs:
   unit-test:
-    uses: sxzz/workflows/.github/workflows/unit-test.yml@v1
+    uses: sxzz/workflows/.github/workflows/unit-test.yml@main
     with:
       node-versions: '22.18, 22, 24, 25'
