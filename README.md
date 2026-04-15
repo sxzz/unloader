@@ -30,8 +30,7 @@ npm i unloader
 ### CLI
 
 ```bash
-node --import unloader/register ...  # ESM
-node --require unloader/register ... # CJS
+node --import unloader/register ...
 ```
 
 ## Plugin Development

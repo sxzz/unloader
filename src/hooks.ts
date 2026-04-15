@@ -59,12 +59,15 @@ export function createHooks(): {
 
     for (const plugin of config.plugins || []) {
       const { handler } = normalizePluginHook(plugin, 'options')
-      config = handler?.call(context, config) || config
+      const result: UnloaderConfig | FalsyValue = handler?.call(context, config)
+      assertSync(result, plugin.name, 'options')
+      config = result || config
     }
 
     for (const plugin of config.plugins || []) {
       const { handler } = normalizePluginHook(plugin, 'buildStart')
-      handler?.call(context)
+      const result = handler?.call(context)
+      assertSync(result, plugin.name, 'buildStart')
       context.debug(`loaded plugin: %s`, plugin.name)
     }
 
@@ -110,6 +113,7 @@ export function createHooks(): {
             attributes: context.importAttributes,
           },
         )
+        assertSync(result, plugin.name, 'resolveId')
 
         if (result) {
           let output: ResolveFnOutput
@@ -170,6 +174,7 @@ export function createHooks(): {
         conditions: context.conditions,
         attributes: context.importAttributes,
       })
+      assertSync(loadResult, plugin.name, 'load')
 
       if (loadResult) {
         if (isModuleSource(loadResult)) {
@@ -209,6 +214,8 @@ export function createHooks(): {
           conditions: context.conditions,
           attributes: context.importAttributes,
         })
+      assertSync(transformResult, plugin.name, 'transform')
+
       if (transformResult) {
         if (isModuleSource(transformResult)) {
           result = { ...result, source: transformResult }
@@ -277,4 +284,16 @@ function isModuleSource(v: unknown): v is ModuleSource {
   return (
     typeof v === 'string' || ArrayBuffer.isView(v) || v instanceof ArrayBuffer
   )
+}
+
+function assertSync(value: unknown, plugin: string, hook: string): void {
+  if (
+    value != null &&
+    typeof value === 'object' &&
+    typeof (value as PromiseLike<unknown>).then === 'function'
+  ) {
+    throw new Error(
+      `Plugin "${plugin}" returned a Promise from "${hook}" hook. unloader only supports synchronous hooks.`,
+    )
+  }
 }

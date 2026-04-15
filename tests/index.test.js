@@ -31,6 +31,21 @@ function clearRequireCache() {
   })
 }
 
+it('throws on async hook', () => {
+  assert.throws(
+    () =>
+      register({
+        plugins: [
+          {
+            name: 'async-plugin',
+            async buildStart() {},
+          },
+        ],
+      }),
+    /unloader only supports synchronous hooks/,
+  )
+})
+
 it('resolve inline config', () => {
   let flag = false
   const unregister = register({
