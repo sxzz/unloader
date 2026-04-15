@@ -1,43 +1,12 @@
 import module from 'node:module'
 import process from 'node:process'
 import { createHooks } from './hooks'
-import { createRpc } from './rpc'
 import { sharedPluginContext } from './utils/context'
 import { debug } from './utils/debug'
 import type { PluginContext } from './plugin'
 import type { UnloaderConfig } from './utils/config'
-import type { Data } from './worker'
 
-export async function register(
-  inlineConfig?: string,
-): Promise<() => Promise<void>> {
-  if (!module.register) {
-    throw new Error(
-      `This version of Node.js (${process.version}) does not support module.register(). Please upgrade to Node v20.6 and above.`,
-    )
-  }
-
-  const { port1, port2 } = new MessageChannel()
-  const rpc = createRpc(port1)
-  port1.unref()
-
-  const data: Data = { port: port2, inlineConfig }
-  const transferList = [port2]
-  module.register('./worker.mjs', {
-    parentURL: import.meta.url,
-    data,
-    transferList,
-  })
-
-  const sourcemap = await rpc.ping()
-  if (sourcemap) {
-    process.setSourceMapsEnabled(true)
-  }
-
-  return () => rpc.deactivate()
-}
-
-export function registerSync(inlineConfig?: UnloaderConfig<true>): () => void {
+export function register(inlineConfig?: UnloaderConfig): () => void {
   const registerHooks = module.registerHooks
   if (!registerHooks) {
     throw new Error(
@@ -52,15 +21,12 @@ export function registerSync(inlineConfig?: UnloaderConfig<true>): () => void {
     log: (message) => console.info(message),
     debug,
   }
-  const config = init.sync(context, inlineConfig)
+  const config = init(context, inlineConfig)
   if (config.sourcemap && !process.sourceMapsEnabled) {
     process.setSourceMapsEnabled(true)
   }
 
-  registerHooks({
-    resolve: resolve.sync,
-    load: load.sync,
-  })
+  registerHooks({ resolve, load })
 
   return deactivate
 }

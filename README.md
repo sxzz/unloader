@@ -30,8 +30,8 @@ npm i unloader
 ### CLI
 
 ```bash
-node --import unloader/register ... # For ESM only, support both sync and async hooks
-node --require unloader/register-sync ... # For both ESM and CJS, only support sync hooks
+node --import unloader/register ...  # ESM
+node --require unloader/register ... # CJS
 ```
 
 ## Plugin Development
@@ -47,24 +47,13 @@ node --require unloader/register-sync ... # For both ESM and CJS, only support s
 
 ### ESM and CJS
 
-unloader supports both ESM and CJS, however, async hooks are only supported in
-ESM. To support both ESM and CJS, please make sure all hooks are synchronous, or
-use [quansync](https://github.com/quansync-dev/quansync).
-
-Here is an example of using sync hooks and quansync:
-
-<details>
-
-<summary>Show code</summary>
+unloader supports both ESM and CJS. All hooks are synchronous.
 
 ```ts
 import { readFileSync } from 'node:fs'
-import { readFile } from '@quansync/fs'
-import { quansync } from 'quansync'
 import type { Plugin } from 'unloader'
 
-// sync usage
-const pluginSync: Plugin<true> = {
+const plugin: Plugin = {
   name: 'my-plugin',
   resolveId(source, importer, options) {
     const result = this.resolve(`${source}.js`, importer, options)
@@ -79,26 +68,7 @@ const pluginSync: Plugin<true> = {
     return contents
   },
 }
-
-// quansync usage
-const pluginQuansync: Plugin = {
-  name: 'my-plugin',
-  resolveId: quansync(function* (source, importer, options) {
-    const result = yield this.resolve(`${source}.js`, importer, options)
-    if (result) {
-      console.log(result)
-      return result
-    }
-  }),
-  load: quansync(function* (id) {
-    const contents = yield readFile(id, 'utf8')
-    console.log(contents)
-    return contents
-  }),
-}
 ```
-
-</details>
 
 ### Example
 
@@ -119,7 +89,7 @@ export function demoPlugin(): Plugin {
       context = _context
       context.log('hello world')
     },
-    async resolveId(source, importer, options) {
+    resolveId(source, importer, options) {
       if (source.startsWith('node:')) return
 
       // Feature: virtual module
@@ -128,7 +98,7 @@ export function demoPlugin(): Plugin {
       }
 
       // Feature: try resolve with different extensions
-      const result = await this.resolve(`${source}.js`, importer, options)
+      const result = this.resolve(`${source}.js`, importer, options)
       if (result) return result
     },
 

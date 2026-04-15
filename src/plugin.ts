@@ -1,10 +1,7 @@
 import type { StringFilter } from './plugin-filter'
 import type { UnloaderConfig } from './utils/config'
 import type { ImportAttributes, ModuleFormat, ModuleSource } from 'node:module'
-import type { MessagePort, Transferable } from 'node:worker_threads'
-import type { QuansyncAwaitableGenerator } from 'quansync'
 
-export type Awaitable<T> = T | Promise<T>
 export type FalsyValue = null | undefined | false | void
 
 export interface ResolveMeta {
@@ -41,24 +38,19 @@ export interface LoadResult {
 }
 
 export interface PluginContext {
-  port?: MessagePort
-  log: (message: any, transferList?: Transferable[]) => void
+  log: (message: any) => void
   debug: (...args: any[]) => void
   error: (message: string | Error) => never
   meta: { unloaderVersion: string }
 }
 
-export type ConditionalAwaitable<C, T> =
-  | (C extends true ? T : Awaitable<T>)
-  | QuansyncAwaitableGenerator<T>
-
-export type ResolveFn<Sync = false> = (
+export type ResolveFn = (
   source: string,
   importer?: string,
   options?: ResolveMeta,
-) => ConditionalAwaitable<Sync, ResolvedId | null>
+) => ResolvedId | null
 
-export interface Plugin<Sync = false> extends Partial<PluginHooks<Sync>> {
+export interface Plugin extends Partial<PluginHooks> {
   name: string
 }
 
@@ -67,7 +59,7 @@ export interface HookFilter {
   code?: StringFilter | undefined
 }
 
-export type HookFilterExtension<K extends keyof FunctionPluginHooks<false>> =
+export type HookFilterExtension<K extends keyof FunctionPluginHooks> =
   K extends 'transform'
     ? { filter?: HookFilter | undefined }
     : K extends 'load'
@@ -76,48 +68,48 @@ export type HookFilterExtension<K extends keyof FunctionPluginHooks<false>> =
         ? { filter?: { id?: StringFilter<RegExp> | undefined } } | undefined
         : {}
 
-export interface FunctionPluginHooks<Sync> {
+export interface FunctionPluginHooks {
   options: (
     this: PluginContext,
-    config: UnloaderConfig<Sync>,
-  ) => UnloaderConfig<Sync> | FalsyValue
-  buildStart: (this: PluginContext) => ConditionalAwaitable<Sync, void>
+    config: UnloaderConfig,
+  ) => UnloaderConfig | FalsyValue
+  buildStart: (this: PluginContext) => void
   resolveId: (
-    this: PluginContext & { resolve: ResolveFn<Sync> },
+    this: PluginContext & { resolve: ResolveFn },
     source: string,
     importer: string | undefined,
     options: ResolveMeta,
-  ) => ConditionalAwaitable<Sync, string | ResolvedId | FalsyValue>
+  ) => string | ResolvedId | FalsyValue
   load: (
     this: PluginContext,
     id: string,
     options: ResolveMeta & {
       format: ModuleFormat | (string & {}) | null | undefined
     },
-  ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
+  ) => ModuleSource | LoadResult | FalsyValue
   transform: (
     this: PluginContext,
     code: ModuleSource,
     id: string,
     options: ResolveMeta & { format: string | null | undefined },
-  ) => ConditionalAwaitable<Sync, ModuleSource | LoadResult | FalsyValue>
+  ) => ModuleSource | LoadResult | FalsyValue
 }
 
 export type ObjectHook<T, O = {}> = T | ({ handler: T } & O)
 
-export type PluginHooks<Sync> = {
-  [K in keyof FunctionPluginHooks<Sync>]: ObjectHook<
-    FunctionPluginHooks<Sync>[K],
+export type PluginHooks = {
+  [K in keyof FunctionPluginHooks]: ObjectHook<
+    FunctionPluginHooks[K],
     HookFilterExtension<K>
   >
 }
 
-export function normalizePluginHook<K extends keyof PluginHooks<false>>(
-  plugin: Plugin<false>,
+export function normalizePluginHook<K extends keyof PluginHooks>(
+  plugin: Plugin,
   key: K,
 ): Partial<
   {
-    handler?: FunctionPluginHooks<false>[K]
+    handler?: FunctionPluginHooks[K]
   } & HookFilterExtension<K>
 > {
   const hook = plugin?.[key]
