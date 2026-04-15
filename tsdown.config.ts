@@ -1,7 +1,6 @@
-import { defineConfig } from 'tsdown'
+import { nodeLib } from 'tsdown-preset-sxzz'
 
-export default defineConfig({
-  entry: './src/{index,register}.ts',
-  exports: true,
-  deps: { onlyBundle: ['@antfu/utils'] },
+export default nodeLib({
+  entry: ['./src/{index,register}.ts'],
+  inlineDeps: ['@antfu/utils'],
 })
