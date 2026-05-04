@@ -55,7 +55,7 @@
     "@sxzz/prettier-config": "^2.3.1",
     "@types/node": "^25.6.0",
     "@types/picomatch": "^4.0.3",
-    "@typescript/native-preview": "7.0.0-dev.20260426.1",
+    "@typescript/native-preview": "7.0.0-dev.20260503.1",
     "bumpp": "^11.0.1",
     "eslint": "^10.2.1",
     "magic-string": "^0.30.21",
