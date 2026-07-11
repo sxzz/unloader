@@ -1,7 +1,7 @@
 {
   "name": "unloader",
   "type": "module",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "packageManager": "pnpm@11.11.0",
   "description": "Node.js loader with a Rollup-like interface.",
   "author": "Kevin Deng <sxzz@sxzz.moe>",
