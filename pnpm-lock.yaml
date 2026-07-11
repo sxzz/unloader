@@ -17,7 +17,7 @@ importers:
       picomatch:
         specifier: ^4.0.5
         version: 4.0.5
-      unconfig:
+      unconfig-core:
         specifier: ^7.5.0
         version: 7.5.0
     devDependencies:

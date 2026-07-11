@@ -1,6 +1,7 @@
 import process from 'node:process'
-import { loadConfigSync } from 'unconfig'
-import type { Plugin } from '../plugin'
+import { createConfigCoreLoader } from 'unconfig-core'
+import type { Plugin } from '../plugin.ts'
+import path from 'node:path'
 
 export interface UnloaderConfig {
   sourcemap?: boolean
@@ -8,16 +9,19 @@ export interface UnloaderConfig {
 }
 
 export function loadConfig(): UnloaderConfig {
-  const { config } = loadConfigSync<UnloaderConfig>({
+  const [{ config }] = createConfigCoreLoader<UnloaderConfig>({
     sources: [
       {
-        files: 'unloader.config',
+        files: ['unloader.config'],
         extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+        parser(filepath) {
+          const mod = require(path.resolve(filepath))
+          return mod?.default || mod
+        },
       },
     ],
     cwd: process.cwd(),
-    defaults: {},
-  })
+  }).load.sync()
 
   return config
 }

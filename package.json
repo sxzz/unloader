@@ -44,7 +44,7 @@
     "@jridgewell/remapping": "^2.3.5",
     "obug": "^2.1.3",
     "picomatch": "^4.0.5",
-    "unconfig": "^7.5.0"
+    "unconfig-core": "^7.5.0"
   },
   "inlinedDependencies": {
     "@antfu/utils": "9.3.0"
