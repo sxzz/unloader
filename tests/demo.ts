@@ -4,7 +4,7 @@ import assert from 'node:assert'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import MagicString from 'magic-string'
-import type { Plugin, PluginContext } from '../src'
+import type { Plugin, PluginContext } from '../src/index.ts'
 
 let context: PluginContext
 

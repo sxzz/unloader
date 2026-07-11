@@ -6,11 +6,11 @@ import {
   type LoadResult,
   type PluginContext,
   type ResolveMeta,
-} from './plugin'
-import { createFilterForId, createFilterForTransform } from './plugin-filter'
-import { loadConfig, type UnloaderConfig } from './utils/config'
-import { attachSourceMap } from './utils/map'
-import { pathToUrl, urlToPath } from './utils/url'
+} from './plugin.ts'
+import { createFilterForId, createFilterForTransform } from './plugin-filter.ts'
+import { loadConfig, type UnloaderConfig } from './utils/config.ts'
+import { attachSourceMap } from './utils/map.ts'
+import { pathToUrl, urlToPath } from './utils/url.ts'
 import type {
   LoadFnOutput,
   LoadHookContext,

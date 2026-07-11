@@ -1,5 +1,5 @@
-import type { StringFilter } from './plugin-filter'
-import type { UnloaderConfig } from './utils/config'
+import type { StringFilter } from './plugin-filter.ts'
+import type { UnloaderConfig } from './utils/config.ts'
 import type { ImportAttributes, ModuleFormat, ModuleSource } from 'node:module'
 
 export type FalsyValue = null | undefined | false | void

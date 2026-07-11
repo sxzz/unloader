@@ -1,3 +1,3 @@
-import { register } from './api'
+import { register } from './api.ts'
 
 register()

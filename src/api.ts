@@ -1,10 +1,10 @@
 import module from 'node:module'
 import process from 'node:process'
-import { createHooks } from './hooks'
-import { sharedPluginContext } from './utils/context'
-import { debug } from './utils/debug'
-import type { PluginContext } from './plugin'
-import type { UnloaderConfig } from './utils/config'
+import { createHooks } from './hooks.ts'
+import { sharedPluginContext } from './utils/context.ts'
+import { debug } from './utils/debug.ts'
+import type { PluginContext } from './plugin.ts'
+import type { UnloaderConfig } from './utils/config.ts'
 
 export function register(inlineConfig?: UnloaderConfig): () => void {
   const registerHooks = module.registerHooks

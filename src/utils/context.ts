@@ -1,11 +1,11 @@
-import { version } from '../../package.json'
-import type { PluginContext } from '../plugin'
+import pkg from '../../package.json' with { type: 'json' }
+import type { PluginContext } from '../plugin.ts'
 
 export const sharedPluginContext: Pick<PluginContext, 'error' | 'meta'> = {
   error: (message) => {
     throw typeof message === 'string' ? new Error(message) : message
   },
   meta: {
-    unloaderVersion: version,
+    unloaderVersion: pkg.version,
   },
 }
