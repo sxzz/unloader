@@ -1,7 +1,6 @@
 import process from 'node:process'
 import { createConfigCoreLoader } from 'unconfig-core'
 import type { Plugin } from '../plugin.ts'
-import path from 'node:path'
 
 export interface UnloaderConfig {
   sourcemap?: boolean
@@ -15,7 +14,8 @@ export function loadConfig(): UnloaderConfig {
         files: ['unloader.config'],
         extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
         parser(filepath) {
-          const mod = require(path.resolve(filepath))
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          const mod = require(filepath)
           return mod?.default || mod
         },
       },

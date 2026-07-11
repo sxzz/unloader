@@ -35,7 +35,7 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "node --test",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsgo --noEmit",
     "format": "prettier --cache --write .",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build"
@@ -55,13 +55,14 @@
     "@sxzz/prettier-config": "^2.3.1",
     "@types/node": "^26.1.1",
     "@types/picomatch": "^4.0.3",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "bumpp": "^11.1.0",
     "eslint": "^10.7.0",
     "magic-string": "^0.30.21",
     "prettier": "^3.9.5",
     "tsdown": "^0.22.4",
     "tsdown-preset-sxzz": "^0.6.0",
-    "typescript": "^7.0.2"
+    "typescript": "^6.0.3"
   },
   "prettier": "@sxzz/prettier-config"
 }

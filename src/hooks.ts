@@ -1,5 +1,6 @@
 import path from 'node:path'
 import remapping from '@jridgewell/remapping'
+import { createFilterForId, createFilterForTransform } from './plugin-filter.ts'
 import {
   normalizePluginHook,
   type FalsyValue,
@@ -7,7 +8,6 @@ import {
   type PluginContext,
   type ResolveMeta,
 } from './plugin.ts'
-import { createFilterForId, createFilterForTransform } from './plugin-filter.ts'
 import { loadConfig, type UnloaderConfig } from './utils/config.ts'
 import { attachSourceMap } from './utils/map.ts'
 import { pathToUrl, urlToPath } from './utils/url.ts'
