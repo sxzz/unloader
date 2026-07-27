@@ -56,7 +56,7 @@
     "@types/node": "^26.1.1",
     "@types/picomatch": "^4.0.3",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
-    "bumpp": "^11.1.0",
+    "bumpp": "^12.0.0",
     "eslint": "^10.7.0",
     "magic-string": "^0.30.21",
     "prettier": "^3.9.5",
