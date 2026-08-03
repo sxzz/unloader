@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@jridgewell/remapping": "^2.3.5",
-    "obug": "^2.1.3",
+    "obug": "^2.1.4",
     "picomatch": "^4.0.5",
     "unconfig-core": "^7.5.0"
   },
@@ -51,16 +51,16 @@
   },
   "devDependencies": {
     "@antfu/utils": "^9.3.0",
-    "@sxzz/eslint-config": "^8.2.1",
-    "@sxzz/prettier-config": "^2.3.1",
-    "@types/node": "^26.1.1",
+    "@sxzz/eslint-config": "^8.4.0",
+    "@sxzz/prettier-config": "^2.3.2",
+    "@types/node": "^26.1.2",
     "@types/picomatch": "^4.0.3",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
-    "bumpp": "^12.0.0",
-    "eslint": "^10.7.0",
-    "magic-string": "^1.0.0",
-    "prettier": "^3.9.5",
-    "tsdown": "^0.22.4",
+    "bumpp": "^12.1.1",
+    "eslint": "^10.8.0",
+    "magic-string": "^1.1.0",
+    "prettier": "^3.9.6",
+    "tsdown": "^0.22.14",
     "tsdown-preset-sxzz": "^0.6.0",
     "typescript": "^6.0.3"
   },
