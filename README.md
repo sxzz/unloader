@@ -107,19 +107,19 @@ export function demoPlugin(): Plugin {
       }
     },
     transform(code, id) {
-      if (typeof code === 'string') {
-        // Feature: source map
-        const s = new MagicString(code)
-        s.prepend('// header\n')
-        const map = s.generateMap({
-          file: id,
-          hires: 'boundary',
-          includeContent: true,
-        })
-        return {
-          code: s.toString(),
-          map,
-        }
+      if (typeof code !== 'string') return
+
+      // Feature: source map
+      const s = new MagicString(code)
+      s.prepend('// header\n')
+      const map = s.generateMap({
+        file: id,
+        hires: 'boundary',
+        includeContent: true,
+      })
+      return {
+        code: s.toString(),
+        map,
       }
     },
   }

@@ -66,18 +66,18 @@ export function demoPlugin(): Plugin {
         id: [/trace\.js$/],
       },
       handler(code, id) {
-        if (typeof code === 'string') {
-          const s = new MagicString(code)
-          s.prepend('// header2\n')
-          const map = s.generateMap({
-            file: id,
-            hires: 'boundary',
-            includeContent: true,
-          })
-          return {
-            code: s.toString(),
-            map,
-          }
+        if (typeof code !== 'string') return
+
+        const s = new MagicString(code)
+        s.prepend('// header2\n')
+        const map = s.generateMap({
+          file: id,
+          hires: 'boundary',
+          includeContent: true,
+        })
+        return {
+          code: s.toString(),
+          map,
         }
       },
     },
