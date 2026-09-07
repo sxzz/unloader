@@ -2,7 +2,7 @@
   "name": "unloader",
   "type": "module",
   "version": "0.10.1",
-  "packageManager": "pnpm@11.24.0",
+  "packageManager": "pnpm@11.26.0",
   "description": "Node.js loader with a Rollup-like interface.",
   "author": "Kevin Deng <sxzz@sxzz.moe>",
   "license": "MIT",
@@ -60,7 +60,7 @@
     "eslint": "^10.8.0",
     "magic-string": "^1.1.0",
     "prettier": "^3.9.6",
-    "tsdown": "^0.22.14",
+    "tsdown": "^0.23.0",
     "tsdown-preset-sxzz": "^0.7.0",
     "typescript": "^6.0.3"
   },
