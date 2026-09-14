@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@jridgewell/remapping": "^2.3.5",
-    "obug": "^2.1.4",
+    "obug": "^3.0.0",
     "picomatch": "^4.0.5",
     "unconfig-core": "^7.5.0"
   },
