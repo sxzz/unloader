@@ -15,6 +15,7 @@
   "bugs": {
     "url": "https://github.com/sxzz/unloader/issues"
   },
+  "sideEffects": false,
   "exports": {
     ".": "./dist/index.mjs",
     "./register": "./dist/register.mjs",
